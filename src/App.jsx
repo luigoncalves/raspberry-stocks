@@ -9,7 +9,7 @@ function App() {
     <div>
       <Navbar />
 
-      <div>
+      <div style={{ paddingTop: '50px' }}>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/investorcenter' element={<InvestorCenter />} />
