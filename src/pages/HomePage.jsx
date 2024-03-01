@@ -93,9 +93,8 @@ function HomePage() {
     <Grid
       templateAreas={`"header header"
                   "main commod"
-                  "main forex"
-                  "main crypto"`}
-      gridTemplateRows={'80px 1fr 1fr 1fr'}
+                 `}
+      gridTemplateRows={'80px 1fr'}
       gridTemplateColumns={'2fr 1fr'}
       h='100vh'
       w='100vw'
@@ -112,12 +111,6 @@ function HomePage() {
       </GridItem>
       <GridItem pl='2' bg='green.300' area={'commod'}>
         Commod
-      </GridItem>
-      <GridItem pl='2' bg='blue.300' area={'forex'}>
-        Forex
-      </GridItem>
-      <GridItem pl='2' bg='blue.300' area={'crypto'}>
-        Crypto
       </GridItem>
     </Grid>
 
