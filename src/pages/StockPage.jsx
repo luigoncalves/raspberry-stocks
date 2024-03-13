@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -25,11 +25,16 @@ import {
   TableContainer,
 } from '@chakra-ui/react';
 
+import { AuthContext } from '../context/auth.context';
+import { addItem } from '../api/item.api';
+
 function StockPage() {
   const { stockTicker } = useParams();
   const [stockInfo, setStockInfo] = useState([]);
   const [stockQuote, setStockQuote] = useState([]);
   const [similarStocks, setSimilarStocks] = useState([]);
+  const [addButton, setAddButton] = useState(true);
+  const { isLoggedIn, user } = useContext(AuthContext);
 
   const getStockInfo = async symbol => {
     try {
@@ -65,6 +70,17 @@ function StockPage() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const addToWatchList = async () => {
+    const itemToAdd = {
+      title: stockInfo.companyName,
+      tickerSymbol: stockInfo.symbol,
+      typeOfAsset: 'stock',
+      userId: user._id,
+    };
+    await addItem(itemToAdd);
+    setAddButton(false);
   };
 
   useEffect(() => {
@@ -112,6 +128,11 @@ function StockPage() {
             </Heading>
             <Text>
               {stockInfo.symbol} | {stockInfo.exchangeShortName}
+            </Text>
+            <Text>
+              {addButton && (
+                <button onClick={addToWatchList}>Add to Watchlist</button>
+              )}
             </Text>
             <Text>
               {stockInfo.price} {stockInfo.currency}{' '}

@@ -6,6 +6,12 @@ import CommodityPage from './pages/CommodityPage';
 import ForexPage from './pages/ForexPage';
 import CryptoPage from './pages/CryptoPage';
 import InvestorCenter from './pages/InvestorCenter';
+import LogIn from './pages/LogIn';
+import SignUp from './pages/SignUp';
+import UserProfile from './pages/UserProfile';
+import ChangeUsername from './pages/ChangeUsername';
+import ChangePassword from './pages/ChangePassword';
+import WatchList from './pages/WatchList';
 import './App.css';
 
 function App() {
@@ -21,7 +27,12 @@ function App() {
           <Route path='forex/:forexTicker' element={<ForexPage />} />
           <Route path='crypto/:cryptoTicker' element={<CryptoPage />} />
           <Route path='/investorcenter' element={<InvestorCenter />} />
-          {/* <Route path='/watchlist' element={<WatchList />} /> */}
+          <Route path='/login' element={<LogIn />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/profile/:name' element={<UserProfile />} />
+          <Route path='/changeUsername' element={<ChangeUsername />} />
+          <Route path='/changePassword' element={<ChangePassword />} />
+          <Route path='/watchlist' element={<WatchList />} />
         </Routes>
       </div>
     </div>

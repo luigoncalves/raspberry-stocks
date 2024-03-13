@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseURL = `${import.meta.env.RASPBERRY_STOCKS_API}/api`;
+const baseURL = `${import.meta.env.VITE_RASPBERRY_STOCKS_API}/api`;
 
 const setAuthorizationHeaders = () => {
   axios.interceptors.request.use(config => {
@@ -16,12 +16,17 @@ const setAuthorizationHeaders = () => {
 
 setAuthorizationHeaders();
 
-export const getAllItems = () => {
-  return axios.get(`${baseURL}/watchlist`);
+export const getAllUserItems = userInput => {
+  return axios.get(`${baseURL}/watchlist/${userInput._id}`, userInput);
 };
-export const addItem = () => {
-  return axios.post(`${baseURL}/watchlist`);
+
+export const addItem = input => {
+  return axios.post(
+    `${baseURL}/${input.typeOfAsset}/${input.tickerSymbol}`,
+    input
+  );
 };
+
 export const deleteItem = id => {
   return axios.delete(`${baseURL}/watchlist/${id}`);
 };
