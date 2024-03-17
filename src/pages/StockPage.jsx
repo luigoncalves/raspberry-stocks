@@ -129,12 +129,14 @@ function StockPage() {
             <Text>
               {stockInfo.symbol} | {stockInfo.exchangeShortName}
             </Text>
-            <Text>
-              {addButton && (
-                <button onClick={addToWatchList}>Add to Watchlist</button>
-              )}
-            </Text>
-            <Text>
+            {isLoggedIn && (
+              <Text>
+                {addButton && (
+                  <button onClick={addToWatchList}>Add to Watchlist</button>
+                )}
+              </Text>
+            )}
+            <Box>
               {stockInfo.price} {stockInfo.currency}{' '}
               {stockQuote.changesPercentage > 0 ? (
                 <Text color='green.500' marginLeft='5'>
@@ -145,7 +147,7 @@ function StockPage() {
                   {` ${stockQuote.change} (${stockQuote.changesPercentage}%)`}
                 </Text>
               )}
-            </Text>
+            </Box>
           </Box>
         </Flex>
       </GridItem>
@@ -199,12 +201,10 @@ function StockPage() {
                     </Tbody>
                   </Table>
                 </TableContainer>
-                <Text fontSize='xs'>
-                  <Heading as='h3' size='sm'>
-                    Description
-                  </Heading>
-                  {stockInfo.description}
-                </Text>
+                <Heading as='h3' size='sm'>
+                  Description
+                </Heading>
+                <Text fontSize='xs'>{stockInfo.description}</Text>
               </Box>
               <Box>
                 <TableContainer>

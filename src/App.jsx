@@ -12,6 +12,7 @@ import UserProfile from './pages/UserProfile';
 import ChangeUsername from './pages/ChangeUsername';
 import ChangePassword from './pages/ChangePassword';
 import WatchList from './pages/WatchList';
+import Search from './pages/Search';
 import './App.css';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path='/changeUsername' element={<ChangeUsername />} />
           <Route path='/changePassword' element={<ChangePassword />} />
           <Route path='/watchlist' element={<WatchList />} />
+          <Route path='/search/:field' element={<Search />} />
         </Routes>
       </div>
     </div>

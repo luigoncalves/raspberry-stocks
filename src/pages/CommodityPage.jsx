@@ -129,12 +129,14 @@ function CommodityPage() {
             <Text>
               {commodInfo.symbol} | {commodInfo.exchangeShortName}
             </Text>
-            <Text>
-              {addButton && (
-                <button onClick={addToWatchList}>Add to Watchlist</button>
-              )}
-            </Text>
-            <Text>
+            {isLoggedIn && (
+              <Text>
+                {addButton && (
+                  <button onClick={addToWatchList}>Add to Watchlist</button>
+                )}
+              </Text>
+            )}
+            <Box>
               {commodInfo.price} {commodInfo.currency}{' '}
               {commodQuote.changesPercentage > 0 ? (
                 <Text color='green.500' marginLeft='5'>
@@ -145,7 +147,7 @@ function CommodityPage() {
                   {` ${commodQuote.change} (${commodQuote.changesPercentage}%)`}
                 </Text>
               )}
-            </Text>
+            </Box>
           </Box>
         </Flex>
       </GridItem>
@@ -199,12 +201,10 @@ function CommodityPage() {
                     </Tbody>
                   </Table>
                 </TableContainer>
-                <Text fontSize='xs'>
-                  <Heading as='h3' size='sm'>
-                    Description
-                  </Heading>
-                  {commodInfo.description}
-                </Text>
+                <Heading as='h3' size='sm'>
+                  Description
+                </Heading>
+                <Text fontSize='xs'>{commodInfo.description}</Text>
               </Box>
               <Box>
                 <TableContainer>
