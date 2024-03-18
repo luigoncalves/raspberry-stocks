@@ -11,6 +11,7 @@ import {
   Spacer,
   GridItem,
   Grid,
+  Button,
 } from '@chakra-ui/react';
 
 import {
@@ -26,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 
 import { AuthContext } from '../context/auth.context';
-import { addItem } from '../api/item.api';
+import { addItem, getAllUserItems } from '../api/item.api';
 
 function StockPage() {
   const { stockTicker } = useParams();
@@ -36,10 +37,10 @@ function StockPage() {
   const [addButton, setAddButton] = useState(true);
   const { isLoggedIn, user } = useContext(AuthContext);
 
-  const getStockInfo = async symbol => {
+  const getStockInfo = async () => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/profile/${stockTicker}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
       );
       console.log(response.data);
       setStockInfo(response.data[0]);
@@ -48,10 +49,10 @@ function StockPage() {
     }
   };
 
-  const getStockQuote = async symbol => {
+  const getStockQuote = async () => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/quote/${stockTicker}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
       );
       console.log(response.data);
       setStockQuote(response.data[0]);
@@ -72,6 +73,8 @@ function StockPage() {
     }
   };
 
+  // ----------------------------------  add item to the Watchlist
+
   const addToWatchList = async () => {
     const itemToAdd = {
       title: stockInfo.companyName,
@@ -83,75 +86,166 @@ function StockPage() {
     setAddButton(false);
   };
 
+  // ------------------------------------ check if the item is already in the Watchlist
+
+  const checkWatchList = async () => {
+    try {
+      const response = await getAllUserItems(user);
+      console.log('this is the watchList:', response.data);
+      const check = await response.data.some(
+        item => item.tickerSymbol === stockTicker
+      );
+      setAddButton(!check);
+      console.log('check', check);
+      console.log('inside checkwatchlist', addButton);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getStockInfo(stockTicker);
     getStockQuote(stockTicker);
   }, []);
+
+  // ------------------------------- everytime the button is clicked this runs
+
+  useEffect(() => {
+    if (user) {
+      checkWatchList();
+      console.log(addButton);
+    }
+  }, [addButton]);
 
   return (
     <Grid
       templateAreas={`"header header"
               "main commod"
              `}
-      gridTemplateRows={'280px 1fr'}
-      gridTemplateColumns={'4fr 1fr'}
+      gridTemplateRows={'300px 1fr'}
+      gridTemplateColumns={'3fr 1fr'}
       minHeight='100vh'
       h='maxContent'
       w='100vw'
       justifyContent='center'
-      gap='1'
+      paddingBottom='2rem'
+      gap='5'
       color='blackAlpha.800'
       fontWeight='bold'
     >
       <GridItem
         pl='2'
-        bg='orange.300'
+        bg='rgba(15, 22, 97, 1)'
+        style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
         area={'header'}
         display='flex'
         alignItems='center'
       >
-        <Flex border='1px solid black'>
+        <Flex marginLeft='3rem'>
           <Image
             src={stockInfo.image}
             fallbackSrc=' '
             alt=''
-            width='150px'
+            width='160px'
             height='auto'
+            marginRight='2rem'
+            borderRadius='md'
           />
           <Box
             display='flex'
             flexDirection='column'
             justifyContent='flex-start'
           >
-            <Heading as='h3' size='md' noOfLines={1}>
+            <Heading
+              as='h3'
+              size='xl'
+              color='gray.100'
+              w='max-content'
+              noOfLines={1}
+            >
               {stockInfo.companyName}
             </Heading>
-            <Text>
-              {stockInfo.symbol} | {stockInfo.exchangeShortName}
+            <Text
+              color='gray'
+              border='1px solid gray'
+              marginTop='1rem'
+              borderRadius='md'
+              w='max-content'
+              padding='0.4rem'
+            >
+              {`${stockInfo.symbol} | ${stockInfo.exchangeShortName}`}
             </Text>
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
               <Text>
                 {addButton && (
                   <button onClick={addToWatchList}>Add to Watchlist</button>
                 )}
               </Text>
-            )}
-            <Box>
-              {stockInfo.price} {stockInfo.currency}{' '}
+            )} */}
+            <Flex marginTop='1rem' color='gray.100' alignItems='end'>
+              <Text fontSize='xl'>{stockInfo.price}</Text>
+              <Text marginLeft='0.3rem' marginBottom='0.2rem' fontSize='xs'>
+                {stockInfo.currency}
+              </Text>
+
               {stockQuote.changesPercentage > 0 ? (
-                <Text color='green.500' marginLeft='5'>
+                <Text
+                  fontSize='md'
+                  color='green.400'
+                  marginLeft='5'
+                  marginBottom='0.1rem'
+                >
                   {`+ ${stockQuote.change} (+ ${stockQuote.changesPercentage}%)`}
                 </Text>
               ) : (
-                <Text color='red.500' marginLeft='5'>
+                <Text fontSize='md' color='red.500' marginLeft='5'>
                   {` ${stockQuote.change} (${stockQuote.changesPercentage}%)`}
                 </Text>
               )}
-            </Box>
+            </Flex>
           </Box>
         </Flex>
+        {isLoggedIn && addButton && (
+          <Button
+            display='flex'
+            borderRadius='md'
+            border='1px solid rgba(220, 14, 117, 0.9)'
+            w='8rem'
+            h='2rem'
+            alignItems='center'
+            justifyContent='center'
+            alignSelf='start'
+            marginTop='5rem'
+            marginLeft='1rem'
+            fontSize='sm'
+            color='rgba(220, 14, 117, 0.9)'
+            _hover={{ bg: 'rgba(220, 14, 117, 0.9)', color: 'gray.100' }}
+            variant='outline'
+            onClick={addToWatchList}
+          >
+            Add to Watchlist
+          </Button>
+        )}
+        {isLoggedIn && !addButton && (
+          <Box
+            display='flex'
+            borderRadius='md'
+            border='1px solid gray'
+            w='8rem'
+            h='2rem'
+            alignItems='center'
+            justifyContent='center'
+            alignSelf='start'
+            marginTop='5rem'
+            marginLeft='1rem'
+            fontSize='sm'
+            color='gray'
+          >
+            Add to Watchlist
+          </Box>
+        )}
       </GridItem>
-      <GridItem pl='2' bg='pink.300' area={'main'}>
+      <GridItem pl='2' area={'main'}>
         {/* ------------- second grid inside the main component ---------------- */}
         <Grid
           templateAreas={`"info info"
@@ -162,17 +256,20 @@ function StockPage() {
           h='maxContent'
           w='maxContent'
           justifyContent='center'
-          gap='1'
+          gap='4'
           color='blackAlpha.700'
+          marginLeft='1rem'
         >
           <GridItem
             pl='2'
-            bg='orange.300'
+            bg='gray.100'
+            style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
             area={'info'}
             display='flex'
             flexDirection='column'
             alignItems='start'
             justifyContent='start'
+            borderRadius='md'
           >
             <Heading as='h3' size='md'>
               About
@@ -248,11 +345,31 @@ function StockPage() {
               </Box>
             </Flex>
           </GridItem>
-          <GridItem pl='2' bg='pink.300' area={'summary'}></GridItem>
-          <GridItem pl='2' bg='green.300' area={'historic'}></GridItem>
+          <GridItem
+            pl='2'
+            bg='gray.100'
+            style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
+            area={'summary'}
+            borderRadius='md'
+          ></GridItem>
+          <GridItem
+            pl='2'
+            bg='gray.100'
+            area={'historic'}
+            style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
+            borderRadius='md'
+          ></GridItem>
         </Grid>
       </GridItem>
-      <GridItem pl='2' bg='green.300' area={'commod'}></GridItem>
+      <GridItem
+        pl='2'
+        bg='green.300'
+        marginRight='1rem'
+        area={'commod'}
+        borderRadius='md'
+      >
+        <Heading>Latest {stockInfo.symbol} News</Heading>
+      </GridItem>
     </Grid>
   );
 }

@@ -26,6 +26,7 @@ function Navbar() {
     try {
       navigate(`/search/${search}`);
       onClose();
+      setSearch('');
     } catch (error) {
       console.log('Error searching', error);
     }
@@ -41,7 +42,7 @@ function Navbar() {
       zIndex={999}
       bg='white'
       boxShadow='md'
-      h='50px'
+      h='70px'
       p={4}
       justifyContent='space-evenly'
       alignItems='center'

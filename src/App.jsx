@@ -20,7 +20,7 @@ function App() {
     <div>
       <Navbar />
 
-      <div style={{ paddingTop: '50px' }}>
+      <div style={{ paddingTop: '70px' }}>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='stocks/:stockTicker' element={<StockPage />} />
