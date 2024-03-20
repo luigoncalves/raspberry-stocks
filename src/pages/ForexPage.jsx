@@ -27,6 +27,7 @@ import {
 
 import { AuthContext } from '../context/auth.context';
 import { addItem } from '../api/item.api';
+const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
 function ForexPage() {
   const { forexTicker } = useParams();
@@ -51,7 +52,7 @@ function ForexPage() {
   const getForexQuote = async symbol => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${apiKey}`
       );
       console.log(response.data);
       setForexQuote(response.data[0]);
@@ -63,7 +64,7 @@ function ForexPage() {
   const getSimilarForex = async symbol => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${apiKey}`
       );
       console.log(response.data);
       setForexQuote(response.data[0]);

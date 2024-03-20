@@ -28,6 +28,7 @@ import {
 
 import { AuthContext } from '../context/auth.context';
 import { deleteItem, getAllUserItems } from '../api/item.api';
+const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
 function WatchList() {
   const { isLoggedIn, user, authenticateUser } = useContext(AuthContext);
@@ -57,7 +58,7 @@ function WatchList() {
         // --------------------------------------------------------if the item is a stock
         if (userStock.typeOfAsset === 'stock') {
           const response = await axios.get(
-            `https://financialmodelingprep.com/api/v3/profile/${userStock.tickerSymbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+            `https://financialmodelingprep.com/api/v3/profile/${userStock.tickerSymbol}?apikey=${apiKey}`
           );
           console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
@@ -67,7 +68,27 @@ function WatchList() {
         // --------------------------------------------------------if the item is a commodity
         else if (userStock.typeOfAsset === 'commodity') {
           const response = await axios.get(
-            `https://financialmodelingprep.com/api/v3/quote/${userStock.tickerSymbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+            `https://financialmodelingprep.com/api/v3/quote/${userStock.tickerSymbol}?apikey=${apiKey}`
+          );
+          console.log('Individual stock response:', response.data[0]);
+          response.data[0]._id = userStock._id;
+          return response.data[0];
+        }
+
+        // --------------------------------------------------------if the item is a forex
+        else if (userStock.typeOfAsset === 'forex') {
+          const response = await axios.get(
+            `https://financialmodelingprep.com/api/v3/quote/${userStock.tickerSymbol}?apikey=${apiKey}`
+          );
+          console.log('Individual stock response:', response.data[0]);
+          response.data[0]._id = userStock._id;
+          return response.data[0];
+        }
+
+        // --------------------------------------------------------if the item is crypto
+        else if (userStock.typeOfAsset === 'crypto') {
+          const response = await axios.get(
+            `https://financialmodelingprep.com/api/v3/quote/${userStock.tickerSymbol}?apikey=${apiKey}`
           );
           console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;

@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
+const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
 function HomePage() {
   const [stocks, setStocks] = useState([]);
@@ -24,22 +25,22 @@ function HomePage() {
   const getMainStocks = async () => {
     try {
       const response1 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/AAPL?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/AAPL?apikey=${apiKey}`
       );
       const response2 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/META?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/META?apikey=${apiKey}`
       );
       const response3 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/NVDA?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/NVDA?apikey=${apiKey}`
       );
       const response4 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/GOOG?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/GOOG?apikey=${apiKey}`
       );
       const response5 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/COKE?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/COKE?apikey=${apiKey}`
       );
       const response6 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/MSFT?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/MSFT?apikey=${apiKey}`
       );
       console.log('Stocks:', response1.data);
       setStocks([
@@ -70,13 +71,13 @@ function HomePage() {
   const getMainCommodities = async () => {
     try {
       const responseC1 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/NGUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/NGUSD?apikey=${apiKey}`
       );
       const responseC2 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/CLUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/CLUSD?apikey=${apiKey}`
       );
       const responseC3 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/GCUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/GCUSD?apikey=${apiKey}`
       );
 
       console.log(responseC1.data);
@@ -89,13 +90,13 @@ function HomePage() {
   const getMainForex = async () => {
     try {
       const responseF1 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/EURUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/EURUSD?apikey=${apiKey}`
       );
       const responseF2 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/GBPUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/GBPUSD?apikey=${apiKey}`
       );
       const responseF3 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/USDJPY?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/USDJPY?apikey=${apiKey}`
       );
 
       console.log(responseF1.data);
@@ -107,13 +108,13 @@ function HomePage() {
   const getMainCrypto = async () => {
     try {
       const responseCr1 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/BTCUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/BTCUSD?apikey=${apiKey}`
       );
       const responseCr2 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/ETHUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/ETHUSD?apikey=${apiKey}`
       );
       const responseCr3 = await axios.get(
-        'https://financialmodelingprep.com/api/v3/quote/ADAUSD?apikey=bad27d0fe5c04662a21dd5d7ca55ba93'
+        `https://financialmodelingprep.com/api/v3/quote/ADAUSD?apikey=${apiKey}`
       );
 
       console.log(responseCr1.data);

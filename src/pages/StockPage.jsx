@@ -28,6 +28,7 @@ import {
 
 import { AuthContext } from '../context/auth.context';
 import { addItem, getAllUserItems } from '../api/item.api';
+const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
 function StockPage() {
   const { stockTicker } = useParams();
@@ -40,7 +41,7 @@ function StockPage() {
   const getStockInfo = async () => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/profile/${stockTicker}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/profile/${stockTicker}?apikey=${apiKey}`
       );
       console.log(response.data);
       setStockInfo(response.data[0]);
@@ -52,7 +53,7 @@ function StockPage() {
   const getStockQuote = async () => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/quote/${stockTicker}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/quote/${stockTicker}?apikey=${apiKey}`
       );
       console.log(response.data);
       setStockQuote(response.data[0]);
@@ -64,7 +65,7 @@ function StockPage() {
   const getSimilarStocks = async symbol => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${apiKey}`
       );
       console.log(response.data);
       setStockQuote(response.data[0]);

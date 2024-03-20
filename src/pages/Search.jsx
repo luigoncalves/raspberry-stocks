@@ -27,6 +27,7 @@ import {
   TableContainer,
 } from '@chakra-ui/react';
 import { AuthContext } from '../context/auth.context';
+const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
 function Search() {
   const [searchItems, setSearchItems] = useState([]);
@@ -40,7 +41,7 @@ function Search() {
   const getSearchResults = async inputField => {
     try {
       const searchResponse = await axios.get(
-        `https://financialmodelingprep.com/api/v3/search?query=${inputField}&apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+        `https://financialmodelingprep.com/api/v3/search?query=${inputField}&apikey=${apiKey}`
       );
       console.log('Look here:', searchResponse.data);
       setSearchItems(searchResponse.data);
@@ -61,7 +62,7 @@ function Search() {
         // ------------------------------------------------------    if the item is CRYPTO
         if (item.exchangeShortName === 'CRYPTO') {
           const response = await axios.get(
-            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=${apiKey}`
           );
 
           if (!response || !response.data || response.data.length === 0) {
@@ -81,7 +82,7 @@ function Search() {
         // --------------------------------------------------------- if the item is COMMOD
         else if (item.exchangeShortName === 'COMMODITY') {
           const response = await axios.get(
-            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=${apiKey}`
           );
 
           if (!response || !response.data || response.data.length === 0) {
@@ -100,7 +101,7 @@ function Search() {
         // ---------------------------------------------- if the item is FOREX
         else if (item.exchangeShortName === 'FOREX') {
           const response = await axios.get(
-            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=${apiKey}`
           );
 
           if (!response || !response.data || response.data.length === 0) {
@@ -119,7 +120,7 @@ function Search() {
         // -------------------------------------- if the item is STOCK
         else {
           const response = await axios.get(
-            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=bad27d0fe5c04662a21dd5d7ca55ba93`
+            `https://financialmodelingprep.com/api/v3/quote/${item.symbol}?apikey=${apiKey}`
           );
 
           if (!response || !response.data || response.data.length === 0) {
