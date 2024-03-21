@@ -1,6 +1,16 @@
 import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import Graphs from '../components/Graphs';
 import axios from 'axios';
+import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Stack,
+} from '@chakra-ui/react';
 import {
   Flex,
   Box,
@@ -12,6 +22,7 @@ import {
   GridItem,
   Grid,
   Button,
+  flexbox,
 } from '@chakra-ui/react';
 
 import {
@@ -34,8 +45,10 @@ function StockPage() {
   const { stockTicker } = useParams();
   const [stockInfo, setStockInfo] = useState([]);
   const [stockQuote, setStockQuote] = useState([]);
-  const [similarStocks, setSimilarStocks] = useState([]);
+  const [news, setNews] = useState([]);
   const [addButton, setAddButton] = useState(true);
+  const [graphDate, setGraphDate] = useState('1Y');
+
   const { isLoggedIn, user } = useContext(AuthContext);
 
   const getStockInfo = async () => {
@@ -62,13 +75,15 @@ function StockPage() {
     }
   };
 
-  const getSimilarStocks = async symbol => {
+  // ---------------------------------------  get News for this specific Stock
+
+  const getStockNews = async symbol => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${apiKey}`
+        `https://financialmodelingprep.com/api/v3/stock_news?page=0&tickers=${symbol}&limit=10&apikey=${apiKey}`
       );
-      console.log(response.data);
-      setStockQuote(response.data[0]);
+
+      setNews(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -104,9 +119,25 @@ function StockPage() {
     }
   };
 
+  // --------------------------- formats the marketCap number
+
+  const formatNumber = number => {
+    if (number >= 1e12) {
+      return (number / 1e12).toFixed(2) + 'T';
+    } else if (number >= 1e9) {
+      return (number / 1e9).toFixed(2) + 'B';
+    } else if (number >= 1e6) {
+      return (number / 1e6).toFixed(2) + 'M';
+    } else {
+      return number.toString();
+    }
+  };
+
   useEffect(() => {
     getStockInfo(stockTicker);
     getStockQuote(stockTicker);
+    getStockNews(stockTicker);
+    console.log('this is news', news);
   }, []);
 
   // ------------------------------- everytime the button is clicked this runs
@@ -123,13 +154,13 @@ function StockPage() {
       templateAreas={`"header header"
               "main commod"
              `}
-      gridTemplateRows={'300px 1fr'}
-      gridTemplateColumns={'3fr 1fr'}
-      minHeight='100vh'
-      h='maxContent'
+      gridTemplateRows={'30% 70%'}
+      gridTemplateColumns={'70% 30%'}
+      h='100vh'
       w='100vw'
       justifyContent='center'
       paddingBottom='2rem'
+      overflowY='auto'
       gap='5'
       color='blackAlpha.800'
       fontWeight='bold'
@@ -145,7 +176,7 @@ function StockPage() {
         <Flex marginLeft='3rem'>
           <Image
             src={stockInfo.image}
-            fallbackSrc=' '
+            fallbackSrc=''
             alt=''
             width='160px'
             height='auto'
@@ -247,7 +278,7 @@ function StockPage() {
         )}
       </GridItem>
       <GridItem pl='2' area={'main'}>
-        {/* ------------- second grid inside the main component ---------------- */}
+        {/* ----------------------------------- second grid inside the main component ---------------- */}
         <Grid
           templateAreas={`"info info"
               "summary historic"
@@ -255,121 +286,448 @@ function StockPage() {
           gridTemplateRows={'1fr 1fr'}
           gridTemplateColumns={'1fr 1fr'}
           h='maxContent'
-          w='maxContent'
           justifyContent='center'
           gap='4'
           color='blackAlpha.700'
           marginLeft='1rem'
+          marginTop='1.5rem'
         >
           <GridItem
-            pl='2'
+            p='1rem'
             bg='gray.100'
             style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
             area={'info'}
             display='flex'
             flexDirection='column'
-            alignItems='start'
-            justifyContent='start'
+            alignItems='flex-start'
             borderRadius='md'
+            width='min-content'
           >
-            <Heading as='h3' size='md'>
+            <Heading
+              as='h3'
+              size='md'
+              marginBottom='1rem'
+              marginTop='1rem'
+              marginLeft='1rem'
+              color='rgba(15, 22, 97, 1)'
+            >
               About
             </Heading>
-            <Flex>
-              <Box>
-                <TableContainer>
-                  <Table size='sm'>
-                    <Thead>
-                      <Tr>
-                        <Th>CEO</Th>
-                        <Th>Sector</Th>
-                        <Th>Industry</Th>
-                        <Th>Website</Th>
-                        <Th>Exchange</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      <Tr>
-                        <Td>{stockInfo.ceo}</Td>
-                        <Td>{stockInfo.sector}</Td>
-                        <Td>{stockInfo.industry}</Td>
-                        <Td>{stockInfo.website}</Td>
-                        <Td>{stockInfo.exchangeShortName}</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-                <Heading as='h3' size='sm'>
-                  Description
-                </Heading>
-                <Text fontSize='xs'>{stockInfo.description}</Text>
-              </Box>
-              <Box>
-                <TableContainer>
-                  <Table size='sm'>
-                    <Tbody>
-                      <Tr>
-                        <Th>CIK</Th>
-                        <Td>{stockInfo.cik}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>ISIN</Th>
-                        <Td>{stockInfo.isin}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>CUSIP</Th>
-                        <Td>{stockInfo.cusip}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>Address</Th>
-                        <Td>{stockInfo.address}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>Phone</Th>
-                        <Td>{stockInfo.phone}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>Country</Th>
-                        <Td>{stockInfo.country}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>Employee</Th>
-                        <Td>{stockInfo.fullTimeEmployees}</Td>
-                      </Tr>
-                      <Tr>
-                        <Th>IPO Date</Th>
-                        <Td>{stockInfo.ipoDate}</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </Box>
+
+            <Flex justifyContent='center' marginLeft='1rem' marginRight='1rem'>
+              <TableContainer>
+                <Table size='sm'>
+                  <Thead>
+                    <Tr>
+                      <Th color='rgba(15, 22, 97, 1)'>CEO</Th>
+                      <Th color='rgba(15, 22, 97, 1)'>Sector</Th>
+                      <Th color='rgba(15, 22, 97, 1)'>Industry</Th>
+                      <Th color='rgba(15, 22, 97, 1)'>Website</Th>
+                      <Th color='rgba(15, 22, 97, 1)'>Country</Th>
+                      <Th color='rgba(15, 22, 97, 1)'>Exchange</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    <Tr>
+                      <Td>{stockInfo.ceo ? stockInfo.ceo : '-'}</Td>
+                      <Td>{stockInfo.sector ? stockInfo.sector : '-'}</Td>
+                      <Td>{stockInfo.industry ? stockInfo.industry : '-'}</Td>
+                      <Td>{stockInfo.website ? stockInfo.website : '-'}</Td>
+                      <Td>{stockInfo.country ? stockInfo.country : '-'}</Td>
+                      <Td>
+                        {stockInfo.exchangeShortName
+                          ? stockInfo.exchangeShortName
+                          : '-'}
+                      </Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
+              </TableContainer>
             </Flex>
+
+            <Heading
+              as='h3'
+              size='md'
+              marginBottom='1rem'
+              marginTop='1rem'
+              marginLeft='1rem'
+              color='rgba(15, 22, 97, 1)'
+            >
+              Description
+            </Heading>
+
+            <Text
+              marginBottom='1rem'
+              marginLeft='1rem'
+              marginRight='1rem'
+              fontSize='xs'
+              textAlign='left'
+              width='80%'
+            >
+              {stockInfo.description
+                ? stockInfo.description
+                : 'No Available Data'}
+            </Text>
           </GridItem>
+
+          {/* ---------------------------------------------------   Summary ------------------------------------------ */}
+
           <GridItem
-            pl='2'
+            p='1rem'
             bg='gray.100'
             style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
             area={'summary'}
+            display='flex'
+            flexDirection='column'
+            alignItems='flex-start'
             borderRadius='md'
-          ></GridItem>
+            width='min-content'
+          >
+            <Heading
+              as='h3'
+              size='sm'
+              marginBottom='1rem'
+              marginTop='1rem'
+              marginLeft='1rem'
+              color='rgba(15, 22, 97, 1)'
+            >
+              Summary
+            </Heading>
+
+            <TableContainer display='flex' width='100%'>
+              <Table size='sm'>
+                <Tbody>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>CIK</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.cik ? stockInfo.cik : '-'}
+                    </Td>
+                  </Tr>
+
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>CUSIP</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.cusip ? stockInfo.cusip : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Address</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.address ? stockInfo.address : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>City</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.city ? stockInfo.city : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Country</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.country ? stockInfo.country : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>ZIP</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.zip ? stockInfo.zip : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Phone</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.phone ? stockInfo.phone : '-'}
+                    </Td>
+                  </Tr>
+
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Employee</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.fullTimeEmployees
+                        ? stockInfo.fullTimeEmployees
+                        : '-'}
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+              <Divider orientation='vertical' borderColor='blackAlpha.800' />
+              <Table size='sm'>
+                <Tbody>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Industry</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.industry ? stockInfo.industry : '-'}
+                    </Td>
+                  </Tr>
+
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Sector</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.sector ? stockInfo.sector : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Exchange</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.exchangeShortName
+                        ? stockInfo.exchangeShortName
+                        : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>ISIN</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.isin ? stockInfo.isin : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Market Cap</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.mktCap ? formatNumber(stockInfo.mktCap) : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Price</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.price ? stockInfo.price : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Volume Avg.</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.volAvg ? formatNumber(stockInfo.volAvg) : '-'}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>IPO Date</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.ipoDate ? stockInfo.ipoDate : '-'}
+                    </Td>
+                  </Tr>
+                  {/* <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>DCF</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.dcf
+                        ? Math.round(stockInfo.dcf * 100) / 100
+                        : '-'}
+                    </Td>
+                  </Tr>
+
+                  <Tr>
+                    <Th color='rgba(15, 22, 97, 1)'>Website</Th>
+                    <Td display='flex' justifyContent='flex-end'>
+                      {stockInfo.website ? stockInfo.website : '-'}
+                    </Td>
+                  </Tr> */}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </GridItem>
+
+          {/* ----------------------------------------- Graph - Historical Prices ---------------------------- */}
+
           <GridItem
-            pl='2'
+            p='1rem'
             bg='gray.100'
             area={'historic'}
             style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
+            display='flex'
+            flexDirection='column'
+            alignItems='flex-start'
             borderRadius='md'
-          ></GridItem>
+          >
+            <Box display='flex' width='100%' justifyContent='space-between'>
+              <Heading
+                as='h3'
+                size='md'
+                marginBottom='1rem'
+                marginTop='1rem'
+                marginLeft='1rem'
+                color='rgba(15, 22, 97, 1)'
+              >
+                Historical Prices
+              </Heading>
+
+              {/* -------------------------------------- Buttons to choose the graph time interval -------------- */}
+              <Flex
+                marginRight='1rem'
+                justifyContent='space-evenly'
+                width='min-content'
+                alignItems='center'
+              >
+                <Button
+                  color={
+                    graphDate === '5D' ? 'gray.100' : 'rgba(15, 22, 97, 1)'
+                  }
+                  size='sm'
+                  variant='ghost'
+                  onClick={() => setGraphDate('5D')}
+                  bg={
+                    graphDate === '5D' ? 'rgba(15, 22, 97, 1)' : 'transparent'
+                  }
+                  _hover={{
+                    bg: graphDate === '5D' ? null : 'rgba(15, 22, 97, 0.3)',
+                  }}
+                >
+                  5D
+                </Button>
+                <Button
+                  color={
+                    graphDate === '1M' ? 'gray.100' : 'rgba(15, 22, 97, 1)'
+                  }
+                  size='sm'
+                  variant='ghost'
+                  onClick={() => setGraphDate('1M')}
+                  bg={
+                    graphDate === '1M' ? 'rgba(15, 22, 97, 1)' : 'transparent'
+                  }
+                  _hover={{
+                    bg: graphDate === '1M' ? null : 'rgba(15, 22, 97, 0.3)',
+                  }}
+                >
+                  1M
+                </Button>
+                <Button
+                  color={
+                    graphDate === '3M' ? 'gray.100' : 'rgba(15, 22, 97, 1)'
+                  }
+                  size='sm'
+                  variant='ghost'
+                  onClick={() => setGraphDate('3M')}
+                  bg={
+                    graphDate === '3M' ? 'rgba(15, 22, 97, 1)' : 'transparent'
+                  }
+                  _hover={{
+                    bg: graphDate === '3M' ? null : 'rgba(15, 22, 97, 0.3)',
+                  }}
+                >
+                  3M
+                </Button>
+                <Button
+                  color={
+                    graphDate === '6M' ? 'gray.100' : 'rgba(15, 22, 97, 1)'
+                  }
+                  size='sm'
+                  variant='ghost'
+                  onClick={() => setGraphDate('6M')}
+                  bg={
+                    graphDate === '6M' ? 'rgba(15, 22, 97, 1)' : 'transparent'
+                  }
+                  _hover={{
+                    bg: graphDate === '6M' ? null : 'rgba(15, 22, 97, 0.3)',
+                  }}
+                >
+                  6M
+                </Button>
+                <Button
+                  color={
+                    graphDate === '1Y' ? 'gray.100' : 'rgba(15, 22, 97, 1)'
+                  }
+                  size='sm'
+                  variant='ghost'
+                  onClick={() => setGraphDate('1Y')}
+                  bg={
+                    graphDate === '1Y' ? 'rgba(15, 22, 97, 1)' : 'transparent'
+                  }
+                  _hover={{
+                    bg: graphDate === '1Y' ? null : 'rgba(15, 22, 97, 0.3)',
+                  }}
+                >
+                  1Y
+                </Button>
+                <Button
+                  color={
+                    graphDate === '5Y' ? 'gray.100' : 'rgba(15, 22, 97, 1)'
+                  }
+                  size='sm'
+                  variant='ghost'
+                  onClick={() => setGraphDate('5Y')}
+                  bg={
+                    graphDate === '5Y' ? 'rgba(15, 22, 97, 1)' : 'transparent'
+                  }
+                  _hover={{
+                    bg: graphDate === '5Y' ? null : 'rgba(15, 22, 97, 0.3)',
+                  }}
+                >
+                  5Y
+                </Button>
+              </Flex>
+            </Box>
+            <Flex justifyContent='center' alignItems='center'>
+              <Graphs symbol={stockTicker} date={graphDate} />
+            </Flex>
+          </GridItem>
         </Grid>
       </GridItem>
+
+      {/* -------------------------------------------------   News ----------------------------------------------- */}
+
       <GridItem
-        pl='2'
-        bg='green.300'
+        p='1rem'
         marginRight='1rem'
+        marginTop='1.5rem'
         area={'commod'}
         borderRadius='md'
+        h='max-content'
       >
-        <Heading>Latest {stockInfo.symbol} News</Heading>
+        <Heading
+          size='lg'
+          fontWeight='normal'
+          textAlign='center'
+          color='rgba(15, 22, 97, 1)'
+        >
+          Latest {stockInfo.symbol} News
+        </Heading>
+
+        {news.map(singleNews => (
+          <ReactRouterLink
+            to={singleNews.url}
+            key={singleNews.id}
+            target='_blank'
+          >
+            <Box
+              as={Card}
+              direction={{ base: 'column', sm: 'row' }}
+              width='90'
+              overflow='hidden'
+              variant='outline'
+              margin='1rem'
+              bg='gray.100'
+              style={{
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)', // Default box shadow
+              }}
+              _hover={{
+                border: '1px solid rgba(15, 22, 97, 1)',
+              }}
+            >
+              <Image
+                objectFit='cover'
+                maxW='20%'
+                maxH='100%'
+                src={singleNews.image}
+                alt='img'
+                fallbackSrc='/news_substitute.jpg'
+              />
+
+              <Stack>
+                <CardBody>
+                  <Heading size='xs' fontWeight='normal' textAlign='left'>
+                    {singleNews.title}
+                  </Heading>
+                  <Text
+                    fontSize='2xs'
+                    fontWeight='normal'
+                    textAlign='right'
+                    color='rgba(220, 14, 117, 0.9)'
+                  >
+                    {singleNews.symbol}
+                  </Text>
+                </CardBody>
+              </Stack>
+            </Box>
+          </ReactRouterLink>
+        ))}
       </GridItem>
     </Grid>
   );

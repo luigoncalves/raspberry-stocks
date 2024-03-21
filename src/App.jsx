@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Graphs from './components/Graphs';
 import HomePage from './pages/HomePage';
 import StockPage from './pages/StockPage';
 import CommodityPage from './pages/CommodityPage';

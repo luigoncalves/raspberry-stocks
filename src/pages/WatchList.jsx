@@ -151,7 +151,7 @@ function WatchList() {
                 <Th>Change</Th>
                 <Th>Currency</Th>
                 <Th>Market</Th>
-                <Th>Volume</Th>
+
                 <Th></Th>
               </Tr>
             </Thead>
@@ -160,12 +160,18 @@ function WatchList() {
                 return (
                   <Tr key={stock._id}>
                     <Td>{stock.symbol}</Td>
-                    <Td>{stock.companyName}</Td>
+                    <Td>
+                      {stock.companyName ? stock.companyName : stock.name}
+                    </Td>
                     <Td>{stock.price}</Td>
-                    <Td>{stock.changes}</Td>
-                    <Td>{stock.currency}</Td>
-                    <Td>{stock.exchangeShortName}</Td>
-                    <Td>{stock.volAvg}</Td>
+                    <Td>{stock.changes ? stock.changes : stock.change}</Td>
+                    <Td>{stock.currency ? stock.currency : '-'}</Td>
+                    <Td>
+                      {stock.exchangeShortName
+                        ? stock.exchangeShortName
+                        : stock.exchange}
+                    </Td>
+
                     <Td>
                       <button
                         onClick={() => deleteItemFromWatchList(stock._id)}
