@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Marquee from 'react-fast-marquee';
 import {
   Flex,
   Box,
@@ -10,6 +11,7 @@ import {
   Spacer,
   GridItem,
   Grid,
+  Center,
 } from '@chakra-ui/react';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
@@ -42,7 +44,12 @@ function HomePage() {
       const response6 = await axios.get(
         `https://financialmodelingprep.com/api/v3/quote/MSFT?apikey=${apiKey}`
       );
-      console.log('Stocks:', response1.data);
+      const response7 = await axios.get(
+        `https://financialmodelingprep.com/api/v3/quote/DIS?apikey=${apiKey}`
+      );
+      const response8 = await axios.get(
+        `https://financialmodelingprep.com/api/v3/quote/TSLA?apikey=${apiKey}`
+      );
       setStocks([
         response1.data,
         response2.data,
@@ -50,7 +57,10 @@ function HomePage() {
         response4.data,
         response5.data,
         response6.data,
+        response7.data,
+        response8.data,
       ]);
+      console.log('Stocks:', stocks);
     } catch (error) {
       console.log(error);
     }
@@ -130,69 +140,74 @@ function HomePage() {
     getMainCommodities();
     getMainForex();
     getMainCrypto();
+    console.log('Stocks:', stocks);
   }, []);
+
   return (
     <Grid
       templateAreas={`"header header"
       "logo logo"
                   "main commod"
                  `}
-      gridTemplateRows={'80px 100px 1fr'}
+      gridTemplateRows={'10% 15% 1fr'}
       gridTemplateColumns={'2fr 1fr'}
-      h='maxContent'
+      h='100vh'
+      overflowY='auto'
       w='100vw'
       justifyContent='center'
-      gap='1'
+      gap='4'
       color='blackAlpha.700'
       fontWeight='bold'
     >
-      <GridItem pl='2' bg='orange.300' area={'header'}>
-        <Box
-          display='flex'
-          animation='carousel 20s linear infinite'
-          h='80px'
-          justifyContent='space-evenly'
-          alignItems='center'
-          borderWidth='2px'
-          borderColor='green.500'
-          overflowX='auto'
-          w='100vw'
-        >
-          {stocks.map(stock => {
-            return (
-              <ChakraLink
-                as={ReactRouterLink}
-                to={`/stocks/${stock[0].symbol}`}
-              >
-                <Box
-                  w='300px'
-                  h='50px'
-                  display='flex'
-                  alignItems='center'
-                  justifyContent='center'
-                  borderWidth='10px'
-                  borderColor='blue.500'
-                  color='gray.600'
-                >
-                  <Text>
-                    {stock[0].symbol} {stock[0].price}
-                  </Text>
-
-                  {stock[0].changesPercentage > 0 ? (
-                    <Text color='green.500' marginLeft='5'>
-                      {`+ ${stock[0].changesPercentage}%`}
+      <GridItem bg='rgba(220, 14, 117, 0.9)' area={'header'} height='100%'>
+        <Flex h='100%'>
+          <Marquee speed='30' pauseOnHover={true}>
+            {stocks.map(stock => {
+              return (
+                <ReactRouterLink to={`/stocks/${stock[0].symbol}`}>
+                  <Box
+                    width='max-content'
+                    h='2rem'
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'
+                    color='rgba(15, 22, 97, 1)'
+                    bg='gray.100'
+                    marginRight='2rem'
+                    padding='1.5rem'
+                    borderRadius='md'
+                    boxShadow='0px 2px 12px rgba(0, 0, 0, 0.5)'
+                    _hover={{
+                      border: '1px solid rgba(15, 22, 97, 1)',
+                    }}
+                  >
+                    <Text>
+                      {stock[0].symbol} {stock[0].price}
                     </Text>
-                  ) : (
-                    <Text color='red.500' marginLeft='5'>
-                      {` ${stock[0].changesPercentage}%`}
-                    </Text>
-                  )}
-                </Box>
-              </ChakraLink>
-            );
-          })}
-        </Box>
+                    <Spacer />
+                    {stock[0].changesPercentage > 0 ? (
+                      <Text color='green.400' marginLeft='1rem'>
+                        {`+ ${(
+                          Math.round(stock[0].changesPercentage * 100) / 100
+                        ).toFixed(3)}%`}
+                      </Text>
+                    ) : (
+                      <Text color='red.500' marginLeft='1rem'>
+                        {` ${(
+                          Math.round(stock[0].changesPercentage * 100) / 100
+                        ).toFixed(3)}%`}
+                      </Text>
+                    )}
+                  </Box>
+                </ReactRouterLink>
+              );
+            })}
+          </Marquee>
+        </Flex>
       </GridItem>
+
+      {/* -----------------------------------   Logo Item ------------------------------------------ */}
+
       <GridItem
         pl='2'
         bg='white'

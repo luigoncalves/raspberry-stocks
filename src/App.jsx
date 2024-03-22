@@ -14,6 +14,7 @@ import ChangeUsername from './pages/ChangeUsername';
 import ChangePassword from './pages/ChangePassword';
 import WatchList from './pages/WatchList';
 import Search from './pages/Search';
+
 import './App.css';
 
 function App() {

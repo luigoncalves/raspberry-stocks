@@ -8,6 +8,7 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts';
+import { Flex } from '@chakra-ui/react';
 
 const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
@@ -19,15 +20,19 @@ function Graphs(props) {
   // ---------------------------------------  this function will get the daily value of the stock for the last 5 years
 
   const getHistoricalData = async () => {
-    try {
-      const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/historical-price-full/${props.symbol}?apikey=${apiKey}`
-      );
-      setHistoricalPrices(response.data.historical.reverse());
+    if (props.symbol) {
+      try {
+        const response = await axios.get(
+          `https://financialmodelingprep.com/api/v3/historical-price-full/${props.symbol}?apikey=${apiKey}`
+        );
+        setHistoricalPrices(response.data.historical.reverse());
 
-      chooseGraphDates();
-    } catch (error) {
-      console.log(error);
+        if (props.date) {
+          chooseGraphDates();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -64,10 +69,9 @@ function Graphs(props) {
 
   useEffect(() => {
     getHistoricalData();
-
-    console.log(props.date);
-    console.log(auxPrices);
-    stockPriceChanges();
+    if (historicalPrices && auxPrices) {
+      stockPriceChanges();
+    }
   }, [props]);
 
   return (
@@ -90,7 +94,14 @@ function Graphs(props) {
           <Tooltip />
         </LineChart>
       ) : (
-        'No available data'
+        <Flex
+          width={props.graphW * 0.9}
+          height={props.graphH * 0.85}
+          justifyContent='center'
+          alignItems='center'
+        >
+          No Available Data
+        </Flex>
       )}
     </div>
   );

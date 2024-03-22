@@ -84,7 +84,7 @@ function StockPage() {
   const getStockNews = async symbol => {
     try {
       const response = await axios.get(
-        `https://financialmodelingprep.com/api/v3/stock_news?page=0&tickers=${symbol}&limit=5&apikey=${apiKey}`
+        `https://financialmodelingprep.com/api/v3/stock_news?page=0&tickers=${symbol}&limit=7&apikey=${apiKey}`
       );
 
       setNews(response.data);
@@ -156,13 +156,23 @@ function StockPage() {
   // ------------------------ for the graph size
 
   useEffect(() => {
-    if (gridItemRef.current) {
-      const width = gridItemRef.current.offsetWidth;
-      const height = gridItemRef.current.offsetHeight;
-      setGridItemWidth(width);
-      setGridItemHeight(height);
-    }
-  }, []);
+    const updateDimensions = () => {
+      if (gridItemRef.current && graphDate) {
+        const width = gridItemRef.current.offsetWidth;
+        const height = gridItemRef.current.offsetHeight;
+        setGridItemWidth(width);
+        setGridItemHeight(height);
+      }
+
+      window.addEventListener('resize', updateDimensions);
+
+      // Clean up by removing the event listener when component unmounts
+      return () => {
+        window.removeEventListener('resize', updateDimensions);
+      };
+    };
+    updateDimensions();
+  }, [window.innerHeight, window.innerWidth]);
 
   return (
     <Grid
@@ -613,12 +623,14 @@ function StockPage() {
           </Flex>
         </Box>
         <Flex justifyContent='center' alignItems='center'>
-          <Graphs
-            symbol={stockTicker}
-            date={graphDate}
-            graphW={gridItemWidth}
-            graphH={gridItemHeight}
-          />
+          {graphDate && (
+            <Graphs
+              symbol={stockTicker}
+              date={graphDate}
+              graphW={gridItemWidth}
+              graphH={gridItemHeight}
+            />
+          )}
         </Flex>
       </GridItem>
 
@@ -641,54 +653,67 @@ function StockPage() {
           Latest {stockInfo.symbol} News
         </Heading>
 
-        {news.map(singleNews => (
-          <ReactRouterLink
-            to={singleNews.url}
-            key={singleNews.id}
-            target='_blank'
-          >
-            <Box
-              as={Card}
-              direction={{ base: 'column', sm: 'row' }}
-              width='90'
-              overflow='hidden'
-              variant='outline'
-              margin='1rem'
-              bg='gray.100'
-              style={{
-                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)', // Default box shadow
-              }}
-              _hover={{
-                border: '1px solid rgba(15, 22, 97, 1)',
-              }}
+        {news.length > 0 ? (
+          news.map(singleNews => (
+            <ReactRouterLink
+              to={singleNews.url}
+              key={singleNews.id}
+              target='_blank'
             >
-              <Image
-                objectFit='cover'
-                maxW='20%'
-                maxH='100%'
-                src={singleNews.image}
-                alt='img'
-                fallbackSrc='/news_substitute.jpg'
-              />
+              <Box
+                as={Card}
+                direction={{ base: 'column', sm: 'row' }}
+                width='90'
+                overflow='hidden'
+                variant='outline'
+                margin='1rem'
+                bg='gray.100'
+                style={{
+                  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)', // Default box shadow
+                }}
+                _hover={{
+                  border: '1px solid rgba(15, 22, 97, 1)',
+                }}
+              >
+                <Image
+                  objectFit='cover'
+                  maxW='20%'
+                  maxH='100%'
+                  src={singleNews.image}
+                  alt='img'
+                  fallbackSrc='/news_substitute.jpg'
+                />
 
-              <Stack>
-                <CardBody>
-                  <Heading size='xs' fontWeight='normal' textAlign='left'>
-                    {singleNews.title}
-                  </Heading>
-                  <Text
-                    fontSize='2xs'
-                    fontWeight='normal'
-                    textAlign='right'
-                    color='rgba(220, 14, 117, 0.9)'
-                  >
-                    {singleNews.symbol}
-                  </Text>
-                </CardBody>
-              </Stack>
-            </Box>
-          </ReactRouterLink>
-        ))}
+                <Stack width='100%'>
+                  <CardBody>
+                    <Heading size='xs' fontWeight='normal' textAlign='left'>
+                      {singleNews.title}
+                    </Heading>
+                    <Text
+                      fontSize='2xs'
+                      fontWeight='normal'
+                      textAlign='right'
+                      color='rgba(220, 14, 117, 0.9)'
+                    >
+                      {singleNews.symbol}
+                    </Text>
+                  </CardBody>
+                </Stack>
+              </Box>
+            </ReactRouterLink>
+          ))
+        ) : (
+          <Box
+            w='90'
+            margin='1rem'
+            bg='gray.100'
+            style={{
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)', // Default box shadow
+            }}
+          >
+            No Available Data
+          </Box>
+        )}
       </GridItem>
     </Grid>
   );
