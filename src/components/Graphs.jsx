@@ -73,7 +73,11 @@ function Graphs(props) {
   return (
     <div>
       {historicalPrices.length > 0 ? (
-        <LineChart width={600} height={300} data={auxPrices}>
+        <LineChart
+          width={props.graphW * 0.9}
+          height={props.graphH * 0.85}
+          data={auxPrices}
+        >
           <Line
             type='monotone'
             dataKey='close'
