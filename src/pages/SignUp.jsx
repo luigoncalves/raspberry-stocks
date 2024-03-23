@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../api/auth.api';
+import {
+  Flex,
+  Button,
+  Box,
+  Image,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
+} from '@chakra-ui/react';
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -26,41 +36,71 @@ function SignUp() {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Email</label>
-        <input
-          type='email'
-          name='email'
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
+    <Flex
+      flexDirection='column'
+      height='100vh'
+      width='100vw'
+      alignItems='center'
+      justifyContent='center'
+    >
+      <Flex
+        flexDirection='column'
+        width='30rem'
+        height='30rem'
+        alignItems='center'
+        justifyContent='center'
+        border='1px solid black'
+        borderRadius='md'
+      >
+        <Heading marginBottom='2rem' color='rgba(15, 22, 97, 1)'>
+          Sign Up
+        </Heading>
 
-        <label>Password</label>
-        <input
-          type='password'
-          name='password'
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
+        <form onSubmit={handleSubmit}>
+          <FormControl w='20rem'>
+            <FormLabel color='rgba(15, 22, 97, 1)'>Email address</FormLabel>
+            <Input
+              type='email'
+              name='email'
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              marginBottom='1rem'
+            />
+            <FormLabel color='rgba(15, 22, 97, 1)'>Password</FormLabel>
+            <Input
+              type='password'
+              name='password'
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              marginBottom='1rem'
+            />
+            <FormLabel color='rgba(15, 22, 97, 1)'>Name</FormLabel>
+            <Input
+              type='text'
+              name='name'
+              value={name}
+              onChange={e => setName(e.target.value)}
+              marginBottom='1rem'
+            />
+          </FormControl>
+          <Button
+            mt={4}
+            color='gray.100'
+            style={{
+              backgroundColor: 'rgba(220, 14, 117, 0.9)',
+            }}
+            type='submit'
+          >
+            Sign Up
+          </Button>
+        </form>
+        {error && <p>{error}</p>}
 
-        <label>Name</label>
-        <input
-          type='text'
-          name='name'
-          value={name}
-          onChange={({ target }) => setName(target.value)}
-        />
+        <p>Already have an account?</p>
 
-        <button type='submit'>Sign Up</button>
-      </form>
-      {error && <p>{error}</p>}
-
-      <p>Already have an account?</p>
-
-      <Link to={'/login'}>Log In</Link>
-    </div>
+        <Link to={'/login'}>Log In</Link>
+      </Flex>
+    </Flex>
   );
 }
 

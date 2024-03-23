@@ -6,7 +6,7 @@ import StockPage from './pages/StockPage';
 import CommodityPage from './pages/CommodityPage';
 import ForexPage from './pages/ForexPage';
 import CryptoPage from './pages/CryptoPage';
-import InvestorCenter from './pages/InvestorCenter';
+// import InvestorCenter from './pages/InvestorCenter';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import UserProfile from './pages/UserProfile';
@@ -14,6 +14,8 @@ import ChangeUsername from './pages/ChangeUsername';
 import ChangePassword from './pages/ChangePassword';
 import WatchList from './pages/WatchList';
 import Search from './pages/Search';
+import IsPrivate from './components/IsPrivate';
+import IsAnon from './components/IsAnon';
 
 import './App.css';
 
@@ -29,13 +31,55 @@ function App() {
           <Route path='commodities/:commodTicker' element={<CommodityPage />} />
           <Route path='forex/:forexTicker' element={<ForexPage />} />
           <Route path='crypto/:cryptoTicker' element={<CryptoPage />} />
-          <Route path='/investorcenter' element={<InvestorCenter />} />
-          <Route path='/login' element={<LogIn />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/profile/:name' element={<UserProfile />} />
-          <Route path='/changeUsername' element={<ChangeUsername />} />
-          <Route path='/changePassword' element={<ChangePassword />} />
-          <Route path='/watchlist' element={<WatchList />} />
+          {/* <Route path='/investorcenter' element={<InvestorCenter />} /> */}
+          <Route
+            path='/login'
+            element={
+              <IsAnon>
+                <LogIn />
+              </IsAnon>
+            }
+          />
+          <Route
+            path='/signup'
+            element={
+              <IsAnon>
+                <SignUp />
+              </IsAnon>
+            }
+          />
+          <Route
+            path='/profile/:name'
+            element={
+              <IsPrivate>
+                <UserProfile />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/changeUsername'
+            element={
+              <IsPrivate>
+                <ChangeUsername />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/changePassword'
+            element={
+              <IsPrivate>
+                <ChangePassword />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/watchlist'
+            element={
+              <IsPrivate>
+                <WatchList />
+              </IsPrivate>
+            }
+          />
           <Route path='/search/:field' element={<Search />} />
         </Routes>
       </div>

@@ -13,7 +13,9 @@ import {
   Grid,
   StatArrow,
   Stat,
+  Icon,
 } from '@chakra-ui/react';
+import { BsArrowRightCircleFill } from 'react-icons/bs';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { useContext } from 'react';
@@ -298,22 +300,47 @@ function HomePage() {
           {user && isLoggedIn ? (
             <Flex
               flexDirection='column'
-              p='3rem'
               w='85%'
               marginBottom='2rem'
               bg='gray.100'
               borderRadius='md'
-              style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)' }}
+              style={{ boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.5)' }}
             >
-              <Heading
-                as='h6'
-                size='lg'
-                marginBottom='2rem'
-                color='rgba(15, 22, 97, 1)'
-                textAlign='left'
+              <ChakraLink
+                as={ReactRouterLink}
+                to={'/watchlist'}
+                width='100%'
+                _hover={{ textDecoration: 'none' }}
               >
-                Go to your Watchlist
-              </Heading>
+                <Flex
+                  alignItems='center'
+                  pt='1rem'
+                  pb='1rem'
+                  pl='3rem'
+                  borderRadius='md'
+                  textAlign='left'
+                  bg='rgba(15, 22, 97, 1)'
+                  _hover={{
+                    bg: 'rgba(220, 14, 117, 0.9)',
+                  }}
+                >
+                  <Text
+                    marginRight='1rem'
+                    fontSize='xl'
+                    textAlign='left'
+                    color='gray.100'
+                  >
+                    Go to your Watchlist
+                  </Text>
+
+                  <Icon
+                    as={BsArrowRightCircleFill}
+                    w={6}
+                    h={6}
+                    color='gray.100'
+                  />
+                </Flex>
+              </ChakraLink>
             </Flex>
           ) : null}
 
