@@ -88,6 +88,7 @@ function StockPage() {
       );
 
       setNews(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -232,13 +233,7 @@ function StockPage() {
             >
               {`${stockInfo.symbol} | ${stockInfo.exchangeShortName}`}
             </Text>
-            {/* {isLoggedIn && (
-              <Text>
-                {addButton && (
-                  <button onClick={addToWatchList}>Add to Watchlist</button>
-                )}
-              </Text>
-            )} */}
+
             <Flex marginTop='1rem' color='gray.100' alignItems='end'>
               <Text fontSize='xl'>{stockInfo.price}</Text>
               <Text marginLeft='0.3rem' marginBottom='0.2rem' fontSize='xs'>
@@ -657,7 +652,7 @@ function StockPage() {
           news.map(singleNews => (
             <ReactRouterLink
               to={singleNews.url}
-              key={singleNews.id}
+              key={singleNews.url}
               target='_blank'
             >
               <Box

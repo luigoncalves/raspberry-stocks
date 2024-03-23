@@ -9,6 +9,7 @@ const AuthProviderWrapper = props => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState('');
+  const [watchlist, setWatchlist] = useState([]);
 
   // put the token in local storage
   const storeToken = token => {
@@ -66,6 +67,8 @@ const AuthProviderWrapper = props => {
         logoutUser,
         search,
         setSearch,
+        watchlist,
+        setWatchlist,
       }}
     >
       {props.children}

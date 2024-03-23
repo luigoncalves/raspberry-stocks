@@ -31,8 +31,9 @@ import { deleteItem, getAllUserItems } from '../api/item.api';
 const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
 function WatchList() {
-  const { isLoggedIn, user, authenticateUser } = useContext(AuthContext);
-  const [stockInfo, setStockInfo] = useState([]);
+  const { isLoggedIn, user, authenticateUser, watchlist, setWatchlist } =
+    useContext(AuthContext);
+  // const [stockInfo, setStockInfo] = useState([]);
   const [userStocks, setUserStocks] = useState([]);
   const [updateDelete, setUpdateDelete] = useState(false);
 
@@ -62,6 +63,7 @@ function WatchList() {
           );
           console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
+          response.data[0].typeOfAssetURL = 'stocks';
           return response.data[0];
         }
 
@@ -72,6 +74,7 @@ function WatchList() {
           );
           console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
+          response.data[0].typeOfAssetURL = 'commodities';
           return response.data[0];
         }
 
@@ -82,6 +85,7 @@ function WatchList() {
           );
           console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
+          response.data[0].typeOfAssetURL = 'forex';
           return response.data[0];
         }
 
@@ -92,15 +96,16 @@ function WatchList() {
           );
           console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
+          response.data[0].typeOfAssetURL = 'crypto';
           return response.data[0];
         }
       });
 
       const promisesArray = await Promise.all(promises);
-      setStockInfo(promisesArray);
+      setWatchlist(promisesArray);
 
       console.log('This is promisesArray:', promisesArray);
-      console.log('This is stockInfo:', stockInfo);
+      console.log('This is watchlist:', watchlist);
     } catch (error) {}
   };
 
@@ -156,7 +161,7 @@ function WatchList() {
               </Tr>
             </Thead>
             <Tbody>
-              {stockInfo.map(stock => {
+              {watchlist.map(stock => {
                 return (
                   <Tr key={stock._id}>
                     <Td>{stock.symbol}</Td>
