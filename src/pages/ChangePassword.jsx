@@ -3,6 +3,17 @@ import { useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { useNavigate } from 'react-router-dom';
+import {
+  Button,
+  Flex,
+  Box,
+  Image,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+} from '@chakra-ui/react';
 
 function ChangePassword() {
   const [password, setPassword] = useState('');
@@ -38,39 +49,98 @@ function ChangePassword() {
   };
 
   return (
-    <>
-      {isLoggedIn && (
-        <div>
-          <form onSubmit={handleSubmit}>
-            <label>Current Password</label>
-            <input
+    <Flex
+      flexDirection='column'
+      height='100vh'
+      width='100vw'
+      alignItems='center'
+      justifyContent='center'
+      bg='gray.100'
+    >
+      <Flex
+        flexDirection='column'
+        width='30rem'
+        height='max-content'
+        alignItems='center'
+        justifyContent='center'
+        boxShadow='0px 2px 2px rgba(15, 22, 97, 1)'
+        borderRadius='md'
+        bg='white'
+      >
+        <Heading
+          marginBottom='2rem'
+          marginTop='2rem'
+          color='rgba(15, 22, 97, 1)'
+        >
+          Change your Password
+        </Heading>
+
+        <form onSubmit={handleSubmit}>
+          <FormControl w='20rem'>
+            <FormLabel color='rgba(15, 22, 97, 1)'>Current Password</FormLabel>
+            <Input
+              id='password'
               type='password'
               name='password'
               value={password}
               onChange={e => setPassword(e.target.value)}
+              borderColor='rgba(15, 22, 97, 1)'
+              _focus={{
+                borderColor: 'rgba(15, 22, 97, 1)',
+                outline: 'none',
+              }}
+              marginBottom='1rem'
             />
-
-            <label>New Password:</label>
-            <input
+            <FormLabel color='rgba(15, 22, 97, 1)'>New Password</FormLabel>
+            <Input
+              id='newPassword'
               type='password'
               name='newPassword'
               value={newPassword}
               onChange={e => setNewPassword(e.target.value)}
+              borderColor='rgba(15, 22, 97, 1)'
+              _focus={{
+                borderColor: 'rgba(15, 22, 97, 1)',
+                outline: 'none',
+              }}
+              marginBottom='1rem'
             />
-            <label>Confirm New Password:</label>
-            <input
+            <FormLabel color='rgba(15, 22, 97, 1)'>
+              Confirm New Password
+            </FormLabel>
+            <Input
+              id='newPasswordConfirm'
               type='password'
               name='newPasswordConfirm'
               value={newPasswordConfirm}
               onChange={e => setNewPasswordConfirm(e.target.value)}
+              borderColor='rgba(15, 22, 97, 1)'
+              _focus={{
+                borderColor: 'rgba(15, 22, 97, 1)',
+                outline: 'none',
+              }}
+              marginBottom='1rem'
             />
-
-            <button type='submit'>Confirm</button>
-          </form>
-          {error && <p>{error}</p>}
-        </div>
-      )}
-    </>
+          </FormControl>
+          <Button
+            mt={2}
+            color='gray.100'
+            border='1px solid rgba(220, 14, 117, 0.9)'
+            bg='rgba(220, 14, 117, 0.9)'
+            _hover={{ bg: 'white', color: 'rgba(220, 14, 117, 0.9)' }}
+            marginBottom='1rem'
+            type='submit'
+          >
+            Confirm
+          </Button>
+        </form>
+        {error && (
+          <Text color='rgba(220, 14, 117, 0.9)' mt='1rem' mb='1rem' p='1rem'>
+            {error}
+          </Text>
+        )}
+      </Flex>
+    </Flex>
   );
 }
 

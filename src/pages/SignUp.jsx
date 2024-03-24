@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Flex, Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { signup } from '../api/auth.api';
 import {
-  Flex,
   Button,
   Box,
   Image,
@@ -10,6 +11,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Text,
 } from '@chakra-ui/react';
 
 function SignUp() {
@@ -42,63 +44,111 @@ function SignUp() {
       width='100vw'
       alignItems='center'
       justifyContent='center'
+      bg='gray.100'
     >
       <Flex
         flexDirection='column'
         width='30rem'
-        height='30rem'
+        height='max-content'
         alignItems='center'
         justifyContent='center'
-        border='1px solid black'
+        boxShadow='0px 2px 2px rgba(15, 22, 97, 1)'
         borderRadius='md'
+        bg='white'
       >
-        <Heading marginBottom='2rem' color='rgba(15, 22, 97, 1)'>
+        <Heading
+          marginBottom='2rem'
+          marginTop='2rem'
+          color='rgba(15, 22, 97, 1)'
+        >
           Sign Up
         </Heading>
-
         <form onSubmit={handleSubmit}>
           <FormControl w='20rem'>
-            <FormLabel color='rgba(15, 22, 97, 1)'>Email address</FormLabel>
-            <Input
-              type='email'
-              name='email'
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              marginBottom='1rem'
-            />
-            <FormLabel color='rgba(15, 22, 97, 1)'>Password</FormLabel>
-            <Input
-              type='password'
-              name='password'
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              marginBottom='1rem'
-            />
             <FormLabel color='rgba(15, 22, 97, 1)'>Name</FormLabel>
             <Input
+              id='name'
               type='text'
               name='name'
               value={name}
               onChange={e => setName(e.target.value)}
+              borderColor='rgba(15, 22, 97, 1)'
+              _focus={{
+                borderColor: 'rgba(15, 22, 97, 1)',
+                outline: 'none',
+              }}
+              marginBottom='1rem'
+            />
+            <FormLabel color='rgba(15, 22, 97, 1)'>Email address</FormLabel>
+            <Input
+              id='email'
+              type='email'
+              name='email'
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              borderColor='rgba(15, 22, 97, 1)'
+              _focus={{
+                borderColor: 'rgba(15, 22, 97, 1)',
+                outline: 'none',
+              }}
+              marginBottom='1rem'
+            />
+            <FormLabel color='rgba(15, 22, 97, 1)'>Password</FormLabel>
+            <Input
+              id='password'
+              type='password'
+              name='password'
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              borderColor='rgba(15, 22, 97, 1)'
+              _focus={{
+                borderColor: 'rgba(15, 22, 97, 1)',
+                outline: 'none',
+              }}
               marginBottom='1rem'
             />
           </FormControl>
           <Button
-            mt={4}
+            mt={2}
             color='gray.100'
-            style={{
-              backgroundColor: 'rgba(220, 14, 117, 0.9)',
-            }}
+            border='1px solid rgba(220, 14, 117, 0.9)'
+            bg='rgba(220, 14, 117, 0.9)'
+            _hover={{ bg: 'white', color: 'rgba(220, 14, 117, 0.9)' }}
             type='submit'
           >
             Sign Up
           </Button>
         </form>
-        {error && <p>{error}</p>}
+        {error && (
+          <Text color='rgba(220, 14, 117, 0.9)' mt='1rem' p='1rem'>
+            {error}
+          </Text>
+        )}
 
-        <p>Already have an account?</p>
+        <Text color='rgba(15, 22, 97, 1)' fontSize='md' marginTop='2rem'>
+          Already have an account?
+        </Text>
 
-        <Link to={'/login'}>Log In</Link>
+        <ChakraLink
+          as={ReactRouterLink}
+          to={'/login'}
+          marginBottom='1rem'
+          borderRadius='md'
+          p='0.2rem'
+          _hover={{
+            textDecoration: 'none',
+          }}
+        >
+          <Text
+            color='rgba(220, 14, 117, 0.9)'
+            fontSize='md'
+            _hover={{
+              color: 'rgba(220, 14, 117, 0.6)',
+            }}
+          >
+            Log In
+          </Text>
+        </ChakraLink>
       </Flex>
     </Flex>
   );

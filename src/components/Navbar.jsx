@@ -72,12 +72,12 @@ function Navbar() {
       paddingLeft='2rem'
       paddingRight='2rem'
     >
-      <ChakraLink as={ReactRouterLink} to={'/'} color='green'>
+      <ChakraLink as={ReactRouterLink} to={'/'}>
         <Flex>
           <Image
             src={'/logo.png'}
             fallbackSrc=''
-            alt=''
+            alt='Home'
             width='2rem'
             height='auto'
             marginRight='2rem'
