@@ -29,7 +29,7 @@ function SignUp() {
 
     try {
       await signup(user);
-      console.log(user);
+      // console.log(user);
       navigate('/login');
     } catch (error) {
       console.log('Error signing up', error);

@@ -154,65 +154,76 @@ function WatchList() {
         Watchlist
       </Heading>
 
-      <TableContainer
-        marginLeft='2.5rem'
-        marginBottom='2.5rem'
-        marginRight='2.5rem'
-      >
-        <Table size='md' width='100%'>
-          <Thead>
-            <Tr>
-              <Th color='rgba(220, 14, 117, 0.9)'>Symbol</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Company Name</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Price</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Change</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Currency</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Market</Th>
+      {watchlist.length > 0 ? (
+        <TableContainer
+          marginLeft='2.5rem'
+          marginBottom='2.5rem'
+          marginRight='2.5rem'
+        >
+          <Table size='md' width='100%'>
+            <Thead>
+              <Tr>
+                <Th color='rgba(220, 14, 117, 0.9)'>Symbol</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Company Name</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Price</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Change</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Currency</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Market</Th>
 
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {watchlist.map(stock => {
-              return (
-                <Tr key={stock._id}>
-                  <ChakraLink
-                    as={ReactRouterLink}
-                    to={`/${stock.typeOfAssetURL}/${stock.symbol}`}
-                    display='flex'
-                    justifyContent='start'
-                    color='rgba(15, 22, 97, 1)'
-                  >
-                    <Td>{stock.symbol}</Td>
-                  </ChakraLink>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {watchlist.map(stock => {
+                return (
+                  <Tr key={stock._id}>
+                    <ChakraLink
+                      as={ReactRouterLink}
+                      to={`/${stock.typeOfAssetURL}/${stock.symbol}`}
+                      display='flex'
+                      justifyContent='start'
+                      color='rgba(15, 22, 97, 1)'
+                    >
+                      <Td>{stock.symbol}</Td>
+                    </ChakraLink>
 
-                  <Td color='rgba(15, 22, 97, 1)'>
-                    {stock.companyName ? stock.companyName : stock.name}
-                  </Td>
-                  <Td color='rgba(15, 22, 97, 1)'>{stock.price}</Td>
-                  <Td color='rgba(15, 22, 97, 1)'>
-                    {stock.changes ? stock.changes : stock.change}
-                  </Td>
-                  <Td color='rgba(15, 22, 97, 1)'>
-                    {stock.currency ? stock.currency : '-'}
-                  </Td>
-                  <Td color='rgba(15, 22, 97, 1)'>
-                    {stock.exchangeShortName
-                      ? stock.exchangeShortName
-                      : stock.exchange}
-                  </Td>
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {stock.companyName ? stock.companyName : stock.name}
+                    </Td>
+                    <Td color='rgba(15, 22, 97, 1)'>{stock.price}</Td>
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {stock.changes ? stock.changes : stock.change}
+                    </Td>
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {stock.currency ? stock.currency : '-'}
+                    </Td>
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {stock.exchangeShortName
+                        ? stock.exchangeShortName
+                        : stock.exchange}
+                    </Td>
 
-                  <Td>
-                    <button onClick={() => deleteItemFromWatchList(stock._id)}>
-                      Remove
-                    </button>
-                  </Td>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+                    <Td>
+                      <button
+                        onClick={() => deleteItemFromWatchList(stock._id)}
+                      >
+                        Remove
+                      </button>
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Box marginLeft='2.5rem' marginBottom='2.5rem' marginRight='2.5rem'>
+          <Text color='rgba(15, 22, 97, 1)'>
+            Nothing to see here yet... but you can add your favorite stocks to
+            this list.
+          </Text>
+        </Box>
+      )}
     </Flex>
   );
 }
