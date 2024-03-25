@@ -108,7 +108,10 @@ function Navbar() {
           <DrawerOverlay />
           <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader borderBottomWidth='1px'>
+            <DrawerHeader
+              borderBottomWidth='1px'
+              color='rgba(220, 14, 117, 0.9)'
+            >
               Search by ticker symbol or company name
             </DrawerHeader>
             <DrawerBody>
@@ -119,9 +122,26 @@ function Navbar() {
                   name='search'
                   value={search}
                   onChange={e => setSearch(e.target.value)}
+                  style={{
+                    padding: '0.3rem',
+                    border: '1px solid rgba(15, 22, 97, 1)',
+                    borderRadius: '0.3rem',
+                    marginLeft: '1rem',
+                    marginRight: '1rem',
+                  }}
                 />
 
-                <button type='submit'>Search</button>
+                <button
+                  type='submit'
+                  style={{
+                    backgroundColor: 'rgba(15, 22, 97, 1)',
+                    color: 'white',
+                    padding: '0.3rem',
+                    borderRadius: '0.3rem',
+                  }}
+                >
+                  Search
+                </button>
               </form>
             </DrawerBody>
           </DrawerContent>

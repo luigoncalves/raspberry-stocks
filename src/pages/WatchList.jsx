@@ -142,55 +142,77 @@ function WatchList() {
   };
 
   return (
-    <Flex width='100vw' flexDirection='column' justifyContent='center'>
-      <h1>Watch List</h1>
+    <Flex
+      flexDirection='column'
+      justifyContent='start'
+      alignItems='flex-start'
+      width='100vw'
+      height='100vh'
+      bg='gray.100'
+    >
+      <Heading margin='2.5rem' textAlign='left' color='rgba(15, 22, 97, 1)'>
+        Watchlist
+      </Heading>
 
-      {isLoggedIn && (
-        <TableContainer width='70vw'>
-          <Table size='md'>
-            <Thead>
-              <Tr>
-                <Th>Symbol</Th>
-                <Th>Company Name</Th>
-                <Th>Price</Th>
-                <Th>Change</Th>
-                <Th>Currency</Th>
-                <Th>Market</Th>
+      <TableContainer
+        marginLeft='2.5rem'
+        marginBottom='2.5rem'
+        marginRight='2.5rem'
+      >
+        <Table size='md' width='100%'>
+          <Thead>
+            <Tr>
+              <Th color='rgba(220, 14, 117, 0.9)'>Symbol</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Company Name</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Price</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Change</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Currency</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Market</Th>
 
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {watchlist.map(stock => {
-                return (
-                  <Tr key={stock._id}>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {watchlist.map(stock => {
+              return (
+                <Tr key={stock._id}>
+                  <ChakraLink
+                    as={ReactRouterLink}
+                    to={`/${stock.typeOfAssetURL}/${stock.symbol}`}
+                    display='flex'
+                    justifyContent='start'
+                    color='rgba(15, 22, 97, 1)'
+                  >
                     <Td>{stock.symbol}</Td>
-                    <Td>
-                      {stock.companyName ? stock.companyName : stock.name}
-                    </Td>
-                    <Td>{stock.price}</Td>
-                    <Td>{stock.changes ? stock.changes : stock.change}</Td>
-                    <Td>{stock.currency ? stock.currency : '-'}</Td>
-                    <Td>
-                      {stock.exchangeShortName
-                        ? stock.exchangeShortName
-                        : stock.exchange}
-                    </Td>
+                  </ChakraLink>
 
-                    <Td>
-                      <button
-                        onClick={() => deleteItemFromWatchList(stock._id)}
-                      >
-                        Remove
-                      </button>
-                    </Td>
-                  </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      )}
+                  <Td color='rgba(15, 22, 97, 1)'>
+                    {stock.companyName ? stock.companyName : stock.name}
+                  </Td>
+                  <Td color='rgba(15, 22, 97, 1)'>{stock.price}</Td>
+                  <Td color='rgba(15, 22, 97, 1)'>
+                    {stock.changes ? stock.changes : stock.change}
+                  </Td>
+                  <Td color='rgba(15, 22, 97, 1)'>
+                    {stock.currency ? stock.currency : '-'}
+                  </Td>
+                  <Td color='rgba(15, 22, 97, 1)'>
+                    {stock.exchangeShortName
+                      ? stock.exchangeShortName
+                      : stock.exchange}
+                  </Td>
+
+                  <Td>
+                    <button onClick={() => deleteItemFromWatchList(stock._id)}>
+                      Remove
+                    </button>
+                  </Td>
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+      </TableContainer>
     </Flex>
   );
 }

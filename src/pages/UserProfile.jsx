@@ -11,6 +11,7 @@ import {
   MenuGroup,
   MenuOptionGroup,
   MenuDivider,
+  Icon,
 } from '@chakra-ui/react';
 import {
   Flex,
@@ -30,14 +31,15 @@ import {
   Input,
 } from '@chakra-ui/react';
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
 } from '@chakra-ui/react';
+import { IoIosArrowDown } from 'react-icons/io';
 import { useDisclosure } from '@chakra-ui/react';
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
@@ -45,12 +47,12 @@ import { AuthContext } from '../context/auth.context';
 import { deleteUser } from '../api/auth.api';
 
 function UserProfile() {
-  const { isLoggedIn, logoutUser, user } = useContext(AuthContext);
+  const { isLoggedIn, logoutUser, user, authenticateUser } =
+    useContext(AuthContext);
   const [edit, setEdit] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const initialRef = React.useRef(null);
-  const finalRef = React.useRef(null);
+  const cancelRef = React.useRef();
 
   const navigate = useNavigate();
 
@@ -66,6 +68,8 @@ function UserProfile() {
   const toggleDelete = async () => {
     console.log(user);
     await deleteUser(user);
+    onClose;
+    authenticateUser();
     navigate('/');
   };
 
@@ -97,7 +101,7 @@ function UserProfile() {
         bg='white'
       >
         <Card
-          maxW='sm'
+          maxW='max-content'
           display='flex'
           flexDirection='column'
           justifyContent='center'
@@ -141,54 +145,104 @@ function UserProfile() {
 
           <CardFooter>
             <Menu>
-              <MenuButton as={Button}>Edit Profile</MenuButton>
+              <MenuButton
+                as={Button}
+                bg='rgba(15, 22, 97, 1)'
+                color='gray.100'
+                _hover={{ color: 'rgba(15, 22, 97, 1)', bg: 'gray.100' }}
+              >
+                <Flex>
+                  Edit Profile
+                  <Icon
+                    as={IoIosArrowDown}
+                    w={5}
+                    h={5}
+                    color='gray.100'
+                    marginLeft='0.5rem'
+                  />
+                </Flex>
+              </MenuButton>
               <MenuList>
-                <MenuItem onClick={handleGoToChangeUsername}>
-                  Edit username
+                <MenuItem
+                  onClick={handleGoToChangeUsername}
+                  color='rgba(15, 22, 97, 1)'
+                >
+                  Change username
                 </MenuItem>
-                <MenuItem onClick={handleGoToChangePassword}>
+                <MenuItem
+                  onClick={handleGoToChangePassword}
+                  color='rgba(15, 22, 97, 1)'
+                >
                   Change password
                 </MenuItem>
               </MenuList>
             </Menu>
 
-            <Button variant='ghost' colorScheme='blue' onClick={toggleDelete}>
+            <Button
+              variant='ghost'
+              bg='rgba(15, 22, 97, 1)'
+              color='gray.100'
+              _hover={{ color: 'rgba(15, 22, 97, 1)', bg: 'gray.100' }}
+              onClick={onOpen}
+              marginLeft='1rem'
+            >
               Delete Profile
+            </Button>
+
+            <AlertDialog
+              isOpen={isOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                    Delete Account
+                  </AlertDialogHeader>
+
+                  <AlertDialogBody>
+                    Are you sure you want to delete your account? You can't undo
+                    this action afterwards.
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <Button
+                      ref={cancelRef}
+                      onClick={onClose}
+                      _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      bg='rgba(220, 14, 117, 0.9)'
+                      color='gray.100'
+                      onClick={toggleDelete}
+                      ml={3}
+                      _hover={{
+                        bg: 'gray.100',
+                        color: 'rgba(220, 14, 117, 0.9)',
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+
+            <Button
+              variant='ghost'
+              colorScheme='blue'
+              onClick={logTheUserOut}
+              bg='rgba(15, 22, 97, 1)'
+              color='gray.100'
+              _hover={{ color: 'rgba(15, 22, 97, 1)', bg: 'gray.100' }}
+              marginLeft='1rem'
+            >
+              Log Out
             </Button>
           </CardFooter>
         </Card>
-
-        {isLoggedIn && (
-          <Flex flexDirection='column' justifyContent='start'>
-            <Heading textAlign='left' fontSize='3xl'>
-              Username:
-            </Heading>
-            <Text textAlign='left'>{user.name}</Text>
-            <Heading textAlign='left' fontSize='3xl'>
-              Email:
-            </Heading>
-            <Text textAlign='left'>{user.email}</Text>
-
-            <Flex justifyContent='start'>
-              <button onClick={toggleEdit}>Edit Profile</button>
-              {edit && (
-                <Flex>
-                  <ChakraLink as={ReactRouterLink} to={'/changeUsername'}>
-                    Change Username
-                  </ChakraLink>
-                  <ChakraLink as={ReactRouterLink} to={'/changePassword'}>
-                    Change Password
-                  </ChakraLink>
-                </Flex>
-              )}
-              <button onClick={toggleDelete}>Delete Profile</button>
-            </Flex>
-
-            <ChakraLink textAlign='left'>
-              <button onClick={logTheUserOut}>Log Out</button>
-            </ChakraLink>
-          </Flex>
-        )}
       </Flex>
     </Flex>
   );

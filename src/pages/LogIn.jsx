@@ -35,8 +35,10 @@ function LogIn() {
       //login response with the jwt token
       const response = await login(user);
       console.log(response.data.authToken);
+
       storeToken(response.data.authToken);
       authenticateUser();
+      console.log(user);
       navigate('/');
     } catch (error) {
       console.log('Error loging in', error);

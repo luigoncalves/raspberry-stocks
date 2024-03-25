@@ -52,6 +52,10 @@ function Graphs(props) {
     } else if (props.date === '5Y') {
       setAuxPrices(historicalPrices);
     }
+    // if the variable comes as undefined, it's assumed as 1Y
+    else {
+      setAuxPrices(historicalPrices.slice(-240));
+    }
   };
 
   const stockPriceChanges = async () => {

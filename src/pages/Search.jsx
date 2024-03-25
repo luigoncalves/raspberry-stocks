@@ -9,6 +9,7 @@ import {
   Text,
   Image,
   Heading,
+  Button,
   Divider,
   Spacer,
   GridItem,
@@ -172,19 +173,25 @@ function Search() {
       justifyContent='center'
       alignContent='center'
       width='100vw'
+      height='auto'
+      bg='gray.100'
     >
-      <Heading>Found {resultsLength} results:</Heading>
-      <TableContainer width='100vw'>
-        <Table size='md'>
+      <Heading margin='2.5rem' textAlign='left' color='rgba(15, 22, 97, 1)'>
+        Found {resultsLength} results for '{field}'
+      </Heading>
+      <TableContainer
+        marginLeft='2.5rem'
+        marginBottom='2.5rem'
+        marginRight='2.5rem'
+      >
+        <Table size='md' width='100%'>
           <Thead>
             <Tr>
-              <Th>Symbol</Th>
-              <Th>Name</Th>
-              <Th>Price</Th>
-              <Th>Change</Th>
-              <Th>Market</Th>
-
-              <Th></Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Symbol</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Name</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Price</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Change</Th>
+              <Th color='rgba(220, 14, 117, 0.9)'>Market</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -194,14 +201,23 @@ function Search() {
                   <ChakraLink
                     as={ReactRouterLink}
                     to={`/${item.route}/${item.symbol}`}
+                    display='flex'
+                    justifyContent='start'
+                    color='rgba(15, 22, 97, 1)'
                   >
                     <Td>{item.symbol ? item.symbol : '-'}</Td>
                   </ChakraLink>
 
-                  <Td>{item.name ? item.name : '-'}</Td>
-                  <Td>{item.price ? item.price : '-'}</Td>
-                  <Td>{item.change ? item.change : '-'}</Td>
-                  <Td>{item.exchangeShortName}</Td>
+                  <Td color='rgba(15, 22, 97, 1)'>
+                    {item.name ? item.name : '-'}
+                  </Td>
+                  <Td color='rgba(15, 22, 97, 1)'>
+                    {item.price ? item.price : '-'}
+                  </Td>
+                  <Td color='rgba(15, 22, 97, 1)'>
+                    {item.change ? item.change : '-'}
+                  </Td>
+                  <Td color='rgba(15, 22, 97, 1)'>{item.exchangeShortName}</Td>
                 </Tr>
               );
             })}
@@ -209,7 +225,25 @@ function Search() {
         </Table>
       </TableContainer>
       {resultsLength > displayedItems && resultsLength !== 0 && (
-        <button onClick={getMoreInfo}>See More</button>
+        <Flex
+          marginLeft='2.5rem'
+          marginRight='2.5rem'
+          marginBottom='2.5rem'
+          alignItems='center'
+          justifyContent='center'
+        >
+          <Button
+            mt={2}
+            color='gray.100'
+            width='max-content'
+            border='1px solid rgba(220, 14, 117, 0.9)'
+            bg='rgba(220, 14, 117, 0.9)'
+            _hover={{ bg: 'white', color: 'rgba(220, 14, 117, 0.9)' }}
+            onClick={getMoreInfo}
+          >
+            See More
+          </Button>
+        </Flex>
       )}
     </Flex>
   );

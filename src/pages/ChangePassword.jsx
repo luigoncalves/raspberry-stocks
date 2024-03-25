@@ -1,4 +1,6 @@
 import { changeUserPassword } from '../api/auth.api';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import { Link as ChakraLink } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
@@ -135,10 +137,19 @@ function ChangePassword() {
           </Button>
         </form>
         {error && (
-          <Text color='rgba(220, 14, 117, 0.9)' mt='1rem' mb='1rem' p='1rem'>
+          <Text color='rgba(220, 14, 117, 0.9)' mb='1rem' p='1rem'>
             {error}
           </Text>
         )}
+        <Flex w='100%' marginLeft='3rem' marginBottom='1rem'>
+          <ChakraLink
+            as={ReactRouterLink}
+            to={`/profile/${user.name}`}
+            color='rgba(15, 22, 97, 1)'
+          >
+            Back
+          </ChakraLink>
+        </Flex>
       </Flex>
     </Flex>
   );
