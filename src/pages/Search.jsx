@@ -170,60 +170,67 @@ function Search() {
   return (
     <Flex
       flexDirection='column'
-      justifyContent='center'
+      justifyContent='start'
       alignContent='center'
       width='100vw'
       height='auto'
+      minH='100vh'
       bg='gray.100'
     >
       <Heading margin='2.5rem' textAlign='left' color='rgba(15, 22, 97, 1)'>
         Found {resultsLength} results for '{field}'
       </Heading>
-      <TableContainer
-        marginLeft='2.5rem'
-        marginBottom='2.5rem'
-        marginRight='2.5rem'
-      >
-        <Table size='md' width='100%'>
-          <Thead>
-            <Tr>
-              <Th color='rgba(220, 14, 117, 0.9)'>Symbol</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Name</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Price</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Change</Th>
-              <Th color='rgba(220, 14, 117, 0.9)'>Market</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {itemsToShow.map(item => {
-              return (
-                <Tr>
-                  <ChakraLink
-                    as={ReactRouterLink}
-                    to={`/${item.route}/${item.symbol}`}
-                    display='flex'
-                    justifyContent='start'
-                    color='rgba(15, 22, 97, 1)'
-                  >
-                    <Td>{item.symbol ? item.symbol : '-'}</Td>
-                  </ChakraLink>
 
-                  <Td color='rgba(15, 22, 97, 1)'>
-                    {item.name ? item.name : '-'}
-                  </Td>
-                  <Td color='rgba(15, 22, 97, 1)'>
-                    {item.price ? item.price : '-'}
-                  </Td>
-                  <Td color='rgba(15, 22, 97, 1)'>
-                    {item.change ? item.change : '-'}
-                  </Td>
-                  <Td color='rgba(15, 22, 97, 1)'>{item.exchangeShortName}</Td>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      {resultsLength === 0 ? null : (
+        <TableContainer
+          marginLeft='2.5rem'
+          marginBottom='2.5rem'
+          marginRight='2.5rem'
+        >
+          <Table size='md' width='100%'>
+            <Thead>
+              <Tr>
+                <Th color='rgba(220, 14, 117, 0.9)'>Symbol</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Name</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Price</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Change</Th>
+                <Th color='rgba(220, 14, 117, 0.9)'>Market</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {itemsToShow.map(item => {
+                return (
+                  <Tr>
+                    <ChakraLink
+                      as={ReactRouterLink}
+                      to={`/${item.route}/${item.symbol}`}
+                      display='flex'
+                      justifyContent='start'
+                      color='rgba(15, 22, 97, 1)'
+                    >
+                      <Td>{item.symbol ? item.symbol : '-'}</Td>
+                    </ChakraLink>
+
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {item.name ? item.name : '-'}
+                    </Td>
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {item.price ? item.price : '-'}
+                    </Td>
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {item.change ? item.change : '-'}
+                    </Td>
+                    <Td color='rgba(15, 22, 97, 1)'>
+                      {item.exchangeShortName}
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      )}
+
       {resultsLength > displayedItems && resultsLength !== 0 && (
         <Flex
           marginLeft='2.5rem'
