@@ -21,6 +21,9 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { deleteItem, getAllUserItems } from '../api/item.api';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { PiDotOutlineBold } from 'react-icons/pi';
 const apiKey = `${import.meta.env.VITE_API_KEY}`;
 
 function HomePage() {
@@ -75,13 +78,15 @@ function HomePage() {
     }
   };
 
+  // -----------------------  get main News  ----------------------
+
   const getMainNews = async () => {
     try {
-      // const responseNews = await axios.get(
-      //   'https://api.marketaux.com/v1/news/all?limit=15&language=en&api_token=3uu1zfw8GpGWNpAICjDrL1Al3ZeawfvsHDwW5Wy5'
-      // );
-      console.log(responseNews.data.data);
-      setNews(responseNews.data.data);
+      const responseNews = await axios.get(
+        `https://financialmodelingprep.com/api/v3/stock_news?page=0&apikey=${apiKey}`
+      );
+      console.log(responseNews.data);
+      setNews(responseNews.data);
     } catch (error) {
       console.log(error);
     }
@@ -163,8 +168,8 @@ function HomePage() {
   };
 
   useEffect(() => {
+    getMainNews();
     getMainStocks();
-    // getMainNews();
     getMainCommodities();
     getMainForex();
     getMainCrypto();
@@ -186,7 +191,7 @@ function HomePage() {
       overflowY='auto'
       w='100vw'
       justifyContent='center'
-      gap='4'
+      gap='2'
       color='blackAlpha.700'
       fontWeight='bold'
     >
@@ -262,34 +267,92 @@ function HomePage() {
 
       {/* ---------------------------------------   News -------------------------------------- */}
 
-      <GridItem bg='pink.300' area={'main'} margin='1rem'>
-        <Flex flexDirection='column'>
-          {news.map(singleNews => {
-            return (
-              <ReactRouterLink to={singleNews.url} key={singleNews.uuid}>
-                <Flex>
-                  <Image
-                    src={singleNews.image_url}
-                    fallbackSrc='/news_substitute.jpg'
-                    alt='news'
-                    width='200px'
-                    height='auto'
-                  />
-                  <Box
-                    display='flex'
-                    flexDirection='column'
-                    justifyContent='flex-start'
+      <GridItem area={'main'} margin='1rem' marginLeft='2.5rem'>
+        <Flex
+          flexDirection='column'
+          width='100%'
+          height='100%'
+          border='1px solid black'
+        >
+          <Box display='flex' justifyContent='space-between'>
+            <Box width='65%' marginLeft='1rem'>
+              <Carousel
+                useKeyboardArrows={true}
+                autoPlay={true}
+                infiniteLoop={true}
+                showStatus={false}
+                showIndicators={false}
+                width='100%'
+              >
+                {news.slice(0, 10).map(singleNews => {
+                  return (
+                    <ChakraLink
+                      as={ReactRouterLink}
+                      to={singleNews.url}
+                      target='_blank'
+                    >
+                      <Box
+                        key={singleNews.url}
+                        className='slide'
+                        width='100%'
+                        position='relative'
+                      >
+                        <Image
+                          alt='sample_file'
+                          src={singleNews.image}
+                          borderRadius='lg'
+                          width='100%'
+                        />
+                        <Text
+                          position='absolute'
+                          bottom='0'
+                          left='0'
+                          padding='1rem'
+                          background='rgba(0, 0, 0, 0.5)'
+                          color='gray.100'
+                          width='100%'
+                        >
+                          {singleNews.title}
+                        </Text>
+                      </Box>
+                    </ChakraLink>
+                  );
+                })}
+              </Carousel>
+            </Box>
+            <Flex width='30%' flexDirection='column' marginTop='1rem'>
+              {news.slice(10, 17).map(singleNews => {
+                return (
+                  <ChakraLink
+                    as={ReactRouterLink}
+                    to={singleNews.url}
+                    target='_blank'
+                    _hover={{ textDecoration: 'none' }}
                   >
-                    <Heading as='h3' size='md' noOfLines={1}>
-                      {singleNews.title}
-                    </Heading>
-                    <Text>{singleNews.description}</Text>
-                  </Box>
-                </Flex>
-                <Divider orientation='horizontal' />
-              </ReactRouterLink>
-            );
-          })}
+                    <Flex
+                      key={singleNews.url}
+                      className='slide'
+                      color='rgba(15, 22, 97, 1)'
+                      fontSize='0.7rem'
+                      textAlign='left'
+                      marginBottom='0.5rem'
+                      _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
+                    >
+                      <Icon
+                        as={PiDotOutlineBold}
+                        w={5}
+                        h={5}
+                        color='rgba(15, 22, 97, 1)'
+                      />
+                      {singleNews.title.length > 60
+                        ? `${singleNews.title.slice(0, 60)}...`
+                        : `${singleNews.title}`}
+                    </Flex>
+                  </ChakraLink>
+                );
+              })}
+            </Flex>
+          </Box>
         </Flex>
       </GridItem>
 
