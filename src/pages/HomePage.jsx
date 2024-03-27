@@ -272,14 +272,15 @@ function HomePage() {
           flexDirection='column'
           width='100%'
           height='100%'
-
-          // border='1px solid black'
+          border='1px solid black'
         >
           <Box
             display='flex'
             justifyContent='space-between'
+            alignItems='center'
             border='1px solid black'
-            height='30%'
+            marginBottom='1rem'
+            height='40%'
           >
             <Box width='65%' marginLeft='1rem' border='1px solid black'>
               <Carousel
@@ -288,7 +289,8 @@ function HomePage() {
                 infiniteLoop={true}
                 showStatus={false}
                 showIndicators={false}
-                height='100%'
+                showThumbs={false}
+                width='100%'
               >
                 {news.slice(0, 10).map(singleNews => {
                   return (
@@ -299,7 +301,6 @@ function HomePage() {
                     >
                       <Box
                         key={singleNews.url}
-                        className='slide'
                         width='100%'
                         position='relative'
                       >
@@ -307,7 +308,7 @@ function HomePage() {
                           alt='sample_file'
                           src={singleNews.image}
                           borderRadius='lg'
-                          width='100%'
+                          width='20000px'
                         />
                         <Text
                           position='absolute'
@@ -345,7 +346,6 @@ function HomePage() {
                   >
                     <Flex
                       key={singleNews.url}
-                      className='slide'
                       color='rgba(15, 22, 97, 1)'
                       fontSize='0.7rem'
                       textAlign='left'
@@ -370,9 +370,11 @@ function HomePage() {
           <Box
             display='flex'
             justifyContent='space-between'
-            alignItems='center'
-            // border='1px solid black'
-            height='25%'
+            alignItems='start'
+            border='1px solid black'
+            marginBottom='1rem'
+            marginTop='1rem'
+            height='20%'
           >
             {news.slice(17, 20).map(singleNews => {
               return (
@@ -396,6 +398,7 @@ function HomePage() {
                       alt='sample_file'
                       src={singleNews.image}
                       borderRadius='lg'
+                      marginBottom='0.3rem'
                       width='80%'
                     />
 
@@ -412,8 +415,10 @@ function HomePage() {
           <Box
             display='flex'
             justifyContent='space-between'
-            alignItems='center'
+            alignItems='start'
             border='1px solid black'
+            marginBottom='1rem'
+            marginTop='1rem'
             height='20%'
           >
             {news.slice(20, 23).map(singleNews => {
@@ -438,6 +443,52 @@ function HomePage() {
                       alt='sample_file'
                       src={singleNews.image}
                       borderRadius='lg'
+                      marginBottom='0.3rem'
+                      width='80%'
+                    />
+
+                    <Text width='80%'>
+                      {singleNews.title.length > 100
+                        ? `${singleNews.title.slice(0, 100)}...`
+                        : `${singleNews.title}`}
+                    </Text>
+                  </Flex>
+                </ChakraLink>
+              );
+            })}
+          </Box>
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            alignItems='start'
+            border='1px solid black'
+            marginBottom='1rem'
+            marginTop='1rem'
+            height='20%'
+          >
+            {news.slice(23, 26).map(singleNews => {
+              return (
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to={singleNews.url}
+                  target='_blank'
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <Flex
+                    key={singleNews.url}
+                    border='1px solid black'
+                    alignItems='center'
+                    flexDirection='column'
+                    color='rgba(15, 22, 97, 1)'
+                    fontSize='0.7rem'
+                    textAlign='left'
+                    _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
+                  >
+                    <Image
+                      alt='sample_file'
+                      src={singleNews.image}
+                      borderRadius='lg'
+                      marginBottom='0.3rem'
                       width='80%'
                     />
 
