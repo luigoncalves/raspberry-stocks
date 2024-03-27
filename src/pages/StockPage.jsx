@@ -47,7 +47,7 @@ function StockPage() {
   const [stockQuote, setStockQuote] = useState([]);
   const [news, setNews] = useState([]);
   const [addButton, setAddButton] = useState(true);
-  const [graphDate, setGraphDate] = useState('1Y');
+  const [graphDate, setGraphDate] = useState('6M');
 
   const gridItemRef = useRef(null);
   const [gridItemWidth, setGridItemWidth] = useState(0);
@@ -62,6 +62,7 @@ function StockPage() {
       );
       console.log(response.data);
       setStockInfo(response.data[0]);
+      setGraphDate('1Y');
     } catch (error) {
       console.log(error);
     }
@@ -142,6 +143,7 @@ function StockPage() {
     getStockInfo(stockTicker);
     getStockQuote(stockTicker);
     getStockNews(stockTicker);
+
     console.log('this is news', news);
   }, []);
 

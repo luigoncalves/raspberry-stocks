@@ -272,17 +272,23 @@ function HomePage() {
           flexDirection='column'
           width='100%'
           height='100%'
-          border='1px solid black'
+
+          // border='1px solid black'
         >
-          <Box display='flex' justifyContent='space-between'>
-            <Box width='65%' marginLeft='1rem'>
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            border='1px solid black'
+            height='30%'
+          >
+            <Box width='65%' marginLeft='1rem' border='1px solid black'>
               <Carousel
                 useKeyboardArrows={true}
                 autoPlay={true}
                 infiniteLoop={true}
                 showStatus={false}
                 showIndicators={false}
-                width='100%'
+                height='100%'
               >
                 {news.slice(0, 10).map(singleNews => {
                   return (
@@ -320,7 +326,15 @@ function HomePage() {
                 })}
               </Carousel>
             </Box>
-            <Flex width='30%' flexDirection='column' marginTop='1rem'>
+            <Flex
+              width='30%'
+              height='100%'
+              flexDirection='column'
+              pt='1rem'
+              pb='1rem'
+              justifyContent='space-between'
+              border='1px solid black'
+            >
               {news.slice(10, 17).map(singleNews => {
                 return (
                   <ChakraLink
@@ -344,14 +358,98 @@ function HomePage() {
                         h={5}
                         color='rgba(15, 22, 97, 1)'
                       />
-                      {singleNews.title.length > 60
-                        ? `${singleNews.title.slice(0, 60)}...`
+                      {singleNews.title.length > 70
+                        ? `${singleNews.title.slice(0, 70)}...`
                         : `${singleNews.title}`}
                     </Flex>
                   </ChakraLink>
                 );
               })}
             </Flex>
+          </Box>
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'
+            // border='1px solid black'
+            height='25%'
+          >
+            {news.slice(17, 20).map(singleNews => {
+              return (
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to={singleNews.url}
+                  target='_blank'
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <Flex
+                    key={singleNews.url}
+                    border='1px solid black'
+                    alignItems='center'
+                    flexDirection='column'
+                    color='rgba(15, 22, 97, 1)'
+                    fontSize='0.7rem'
+                    textAlign='left'
+                    _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
+                  >
+                    <Image
+                      alt='sample_file'
+                      src={singleNews.image}
+                      borderRadius='lg'
+                      width='80%'
+                    />
+
+                    <Text width='80%'>
+                      {singleNews.title.length > 100
+                        ? `${singleNews.title.slice(0, 100)}...`
+                        : `${singleNews.title}`}
+                    </Text>
+                  </Flex>
+                </ChakraLink>
+              );
+            })}
+          </Box>
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'
+            border='1px solid black'
+            height='20%'
+          >
+            {news.slice(20, 23).map(singleNews => {
+              return (
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to={singleNews.url}
+                  target='_blank'
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <Flex
+                    key={singleNews.url}
+                    border='1px solid black'
+                    alignItems='center'
+                    flexDirection='column'
+                    color='rgba(15, 22, 97, 1)'
+                    fontSize='0.7rem'
+                    textAlign='left'
+                    _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
+                  >
+                    <Image
+                      alt='sample_file'
+                      src={singleNews.image}
+                      borderRadius='lg'
+                      width='80%'
+                    />
+
+                    <Text width='80%'>
+                      {singleNews.title.length > 100
+                        ? `${singleNews.title.slice(0, 100)}...`
+                        : `${singleNews.title}`}
+                    </Text>
+                  </Flex>
+                </ChakraLink>
+              );
+            })}
           </Box>
         </Flex>
       </GridItem>
