@@ -619,15 +619,15 @@ function StockPage() {
           </Flex>
         </Box>
         <Flex justifyContent='center' alignItems='center'>
-          {graphDate && (
-            <Graphs
-              symbol={stockTicker}
-              date={graphDate}
-              setDate={setGraphDate}
-              graphW={gridItemWidth}
-              graphH={gridItemHeight}
-            />
-          )}
+          {/* {graphDate && ( */}
+          <Graphs
+            symbol={stockTicker}
+            date={graphDate}
+            setDate={setGraphDate}
+            graphW={gridItemWidth}
+            graphH={gridItemHeight}
+          />
+          {/* )} */}
         </Flex>
       </GridItem>
 

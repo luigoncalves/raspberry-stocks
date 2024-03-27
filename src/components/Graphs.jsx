@@ -26,11 +26,12 @@ function Graphs(props) {
           `https://financialmodelingprep.com/api/v3/historical-price-full/${props.symbol}?apikey=${apiKey}`
         );
         setHistoricalPrices(response.data.historical.reverse());
-        props.setDate('1Y');
+        // props.setDate('1Y');
 
         if (props.date) {
           chooseGraphDates();
         }
+        stockPriceChanges();
       } catch (error) {
         console.log(error);
       }
@@ -74,14 +75,14 @@ function Graphs(props) {
 
   useEffect(() => {
     getHistoricalData();
-    if (historicalPrices && auxPrices) {
-      stockPriceChanges();
-    }
+    // if (historicalPrices && auxPrices) {
+    //   stockPriceChanges();
+    // }
   }, [props]);
 
   return (
     <div>
-      {historicalPrices.length > 0 ? (
+      {historicalPrices.length > 0 && changes.length > 0 ? (
         <LineChart
           width={props.graphW * 0.9}
           height={props.graphH * 0.85}
