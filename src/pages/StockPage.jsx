@@ -62,7 +62,6 @@ function StockPage() {
       );
       console.log(response.data);
       setStockInfo(response.data[0]);
-      setGraphDate('1Y');
     } catch (error) {
       console.log(error);
     }
@@ -624,6 +623,7 @@ function StockPage() {
             <Graphs
               symbol={stockTicker}
               date={graphDate}
+              setDate={setGraphDate}
               graphW={gridItemWidth}
               graphH={gridItemHeight}
             />

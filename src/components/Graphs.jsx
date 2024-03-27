@@ -26,6 +26,7 @@ function Graphs(props) {
           `https://financialmodelingprep.com/api/v3/historical-price-full/${props.symbol}?apikey=${apiKey}`
         );
         setHistoricalPrices(response.data.historical.reverse());
+        props.setDate('1Y');
 
         if (props.date) {
           chooseGraphDates();
