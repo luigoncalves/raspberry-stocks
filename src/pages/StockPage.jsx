@@ -623,7 +623,7 @@ function StockPage() {
           <Graphs
             symbol={stockTicker}
             date={graphDate}
-            // setDate={setGraphDate}
+            setDate={setGraphDate}
             graphW={gridItemWidth}
             graphH={gridItemHeight}
           />
