@@ -139,6 +139,7 @@ function StockPage() {
   };
 
   useEffect(() => {
+    setGraphDate(graphDate);
     getStockInfo(stockTicker);
     getStockQuote(stockTicker);
     getStockNews(stockTicker);
