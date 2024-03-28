@@ -26,7 +26,6 @@ function Graphs(props) {
           `https://financialmodelingprep.com/api/v3/historical-price-full/${props.symbol}?apikey=${apiKey}`
         );
         setHistoricalPrices(response.data.historical.reverse());
-        props.setDate(props.date);
 
         if (props.date) {
           chooseGraphDates();
@@ -75,6 +74,7 @@ function Graphs(props) {
 
   useEffect(() => {
     getHistoricalData();
+    console.log('this is the time stamp:', props.date);
     // if (historicalPrices && auxPrices) {
     //   stockPriceChanges();
     // }
