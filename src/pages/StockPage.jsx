@@ -5,6 +5,14 @@ import axios from 'axios';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from 'recharts';
+import {
   Card,
   CardHeader,
   CardBody,
@@ -47,11 +55,15 @@ function StockPage() {
   const [stockQuote, setStockQuote] = useState([]);
   const [news, setNews] = useState([]);
   const [addButton, setAddButton] = useState(true);
-  const [graphDate, setGraphDate] = useState('6M');
+  const [graphDate, setGraphDate] = useState('1Y');
 
   const gridItemRef = useRef(null);
   const [gridItemWidth, setGridItemWidth] = useState(0);
   const [gridItemHeight, setGridItemHeight] = useState(0);
+
+  const [historicalPrices, setHistoricalPrices] = useState([]);
+  const [auxPrices, setAuxPrices] = useState([]);
+  const [changes, setChanges] = useState([]);
 
   const { isLoggedIn, user } = useContext(AuthContext);
 
@@ -60,7 +72,7 @@ function StockPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/profile/${stockTicker}?apikey=${apiKey}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       setStockInfo(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -72,7 +84,7 @@ function StockPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/quote/${stockTicker}?apikey=${apiKey}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       setStockQuote(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -88,7 +100,7 @@ function StockPage() {
       );
 
       setNews(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -112,13 +124,13 @@ function StockPage() {
   const checkWatchList = async () => {
     try {
       const response = await getAllUserItems(user);
-      console.log('this is the watchList:', response.data);
+      // console.log('this is the watchList:', response.data);
       const check = await response.data.some(
         item => item.tickerSymbol === stockTicker
       );
       setAddButton(!check);
-      console.log('check', check);
-      console.log('inside checkwatchlist', addButton);
+      // console.log('check', check);
+      // console.log('inside checkwatchlist', addButton);
     } catch (error) {
       console.log(error);
     }
@@ -138,13 +150,69 @@ function StockPage() {
     }
   };
 
+  // ---------------------------------------  this function will get the daily value of the stock for the last 5 years
+
+  const getHistoricalData = async stockTicker => {
+    try {
+      const response = await axios.get(
+        `https://financialmodelingprep.com/api/v3/historical-price-full/${stockTicker}?apikey=${apiKey}`
+      );
+      console.log('reponse here:', response.data.historical);
+      const revertArray = response.data.historical.reverse();
+
+      setHistoricalPrices(revertArray);
+
+      console.log('this is revertedarray', revertArray);
+      console.log('this is historicalPrices1', historicalPrices);
+
+      // if (graphDate) {
+      //   chooseGraphDates();
+      // }
+
+      // stockPriceChanges();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // -------------------------------------  choosing the time interval
+
+  const chooseGraphDates = () => {
+    if (graphDate === '5D') {
+      setAuxPrices(historicalPrices.slice(-5));
+    } else if (graphDate === '1M') {
+      setAuxPrices(historicalPrices.slice(-20));
+    } else if (graphDate === '3M') {
+      setAuxPrices(historicalPrices.slice(-60));
+    } else if (graphDate === '6M') {
+      setAuxPrices(historicalPrices.slice(-120));
+    } else if (graphDate === '1Y') {
+      setAuxPrices(historicalPrices.slice(-240));
+    } else if (graphDate === '5Y') {
+      setAuxPrices(historicalPrices);
+    }
+    // if the variable comes as undefined, it's assumed as 1Y
+    else {
+      setAuxPrices(historicalPrices.slice(-240));
+    }
+  };
+
+  const stockPriceChanges = async () => {
+    try {
+      const response = await axios.get(
+        `https://financialmodelingprep.com/api/v3/stock-price-change/${stockTicker}?apikey=${apiKey}`
+      );
+      setChanges(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setGraphDate(graphDate);
     getStockInfo(stockTicker);
     getStockQuote(stockTicker);
     getStockNews(stockTicker);
-
-    console.log('this is news', news);
+    getHistoricalData(stockTicker);
   }, []);
 
   // ------------------------------- everytime the button is clicked this runs
@@ -152,7 +220,6 @@ function StockPage() {
   useEffect(() => {
     if (user) {
       checkWatchList();
-      console.log(addButton);
     }
   }, [addButton]);
 
@@ -176,6 +243,24 @@ function StockPage() {
     };
     updateDimensions();
   }, [window.innerHeight, window.innerWidth]);
+
+  useEffect(() => {
+    getHistoricalData(stockTicker);
+
+    console.log('this is historicalPrices2', historicalPrices);
+    console.log('this is the time stamp:', graphDate);
+    // if (historicalPrices && auxPrices) {
+    //   stockPriceChanges();
+    // }
+  }, [graphDate, gridItemHeight, gridItemWidth]);
+
+  useEffect(() => {
+    console.log('this is historicalPrices', historicalPrices);
+    if (historicalPrices.length > 0 && graphDate) {
+      chooseGraphDates();
+      stockPriceChanges();
+    }
+  }, [historicalPrices]);
 
   return (
     <Grid
@@ -621,14 +706,42 @@ function StockPage() {
         </Box>
         <Flex justifyContent='center' alignItems='center'>
           {/* {graphDate && ( */}
-          <Graphs
+          {/* <Graphs
             symbol={stockTicker}
             date={graphDate}
             setDate={setGraphDate}
             graphW={gridItemWidth}
             graphH={gridItemHeight}
-          />
+          /> */}
           {/* )} */}
+
+          {historicalPrices.length > 0 && changes.length > 0 ? (
+            <LineChart
+              width={gridItemWidth * 0.9}
+              height={gridItemHeight * 0.85}
+              data={auxPrices}
+            >
+              <Line
+                type='monotone'
+                dataKey='close'
+                stroke={changes[0][graphDate] > 0 ? '#38A169' : '#E53E3E'}
+                dot={false}
+              />
+              <CartesianGrid stroke='#ccc' />
+              <XAxis dataKey='label' fontSize='10' />
+              <YAxis fontSize='10' />
+              <Tooltip />
+            </LineChart>
+          ) : (
+            <Flex
+              width={gridItemWidth * 0.9}
+              height={gridItemHeight * 0.85}
+              justifyContent='center'
+              alignItems='center'
+            >
+              No Available Data
+            </Flex>
+          )}
         </Flex>
       </GridItem>
 
