@@ -63,6 +63,18 @@ function HomePage() {
       const response8 = await axios.get(
         `https://financialmodelingprep.com/api/v3/quote/TSLA?apikey=${apiKey}`
       );
+      const response9 = await axios.get(
+        `https://financialmodelingprep.com/api/v3/quote/BAC?apikey=${apiKey}`
+      );
+      const response10 = await axios.get(
+        `https://financialmodelingprep.com/api/v3/quote/PFE?apikey=${apiKey}`
+      );
+      const response11 = await axios.get(
+        `https://financialmodelingprep.com/api/v3/quote/MCD?apikey=${apiKey}`
+      );
+      const response12 = await axios.get(
+        `https://financialmodelingprep.com/api/v3/quote/AMZN?apikey=${apiKey}`
+      );
       setStocks([
         response1.data,
         response2.data,
@@ -72,6 +84,10 @@ function HomePage() {
         response6.data,
         response7.data,
         response8.data,
+        response9.data,
+        response10.data,
+        response11.data,
+        response12.data,
       ]);
       console.log('Stocks:', stocks);
     } catch (error) {
@@ -290,12 +306,20 @@ function HomePage() {
           <Box
             display='flex'
             justifyContent='space-between'
-            alignItems='center'
+            alignItems='start'
             // border='1px solid black'
-            marginBottom='1rem'
-            height='40%'
+            marginBottom='2rem'
+            marginTop='2.5rem'
+            height='auto'
           >
-            <Box width='65%' marginLeft='1rem'>
+            <Box
+              width='65%'
+              height='auto'
+              marginLeft='1rem'
+              // border='1px solid green'
+              position='relative'
+              // overflow='hidden'
+            >
               <Carousel
                 useKeyboardArrows={true}
                 autoPlay={true}
@@ -307,13 +331,17 @@ function HomePage() {
               >
                 {news.slice(0, 10).map(singleNews => {
                   return (
-                    <ChakraLink
-                      as={ReactRouterLink}
+                    <ReactRouterLink
                       to={singleNews.url}
                       key={singleNews.url}
                       target='_blank'
                     >
-                      <Box width='100%' position='relative'>
+                      <Box
+                        width='100%'
+                        maxH='100%'
+                        position='relative'
+                        // border='1px solid red'
+                      >
                         <Image alt='sample_file' src={singleNews.image} />
                         <Text
                           position='absolute'
@@ -328,7 +356,7 @@ function HomePage() {
                           {singleNews.title}
                         </Text>
                       </Box>
-                    </ChakraLink>
+                    </ReactRouterLink>
                   );
                 })}
               </Carousel>
@@ -377,16 +405,16 @@ function HomePage() {
             display='flex'
             justifyContent='space-between'
             alignItems='center'
-            border='1px solid black'
-            marginBottom='1rem'
-            marginTop='1rem'
-            height='20%'
+            // border='1px solid black'
+            marginBottom='2.5rem'
+            marginTop='2.5rem'
+            height='auto'
           >
             {news.slice(17, 20).map(singleNews => {
               return (
                 <Flex
                   flexDirection='column'
-                  border='1px solid black'
+                  // border='1px solid black'
                   key={singleNews.url}
                   style={{ height: '100%' }}
                 >
@@ -407,15 +435,28 @@ function HomePage() {
                       style={{ height: '100%' }}
                       _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
                     >
-                      <Image
-                        alt='sample_file'
-                        src={singleNews.image}
-                        marginBottom='0.3rem'
-                        width='80%'
-                        _hover={{ borderRadius: 'lg' }}
-                      />
+                      <Box
+                        // border='1px solid black'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                        width='90%'
+                      >
+                        <Image
+                          alt='sample_file'
+                          src={singleNews.image}
+                          marginBottom='0.3rem'
+                          width='100%'
+                          height='90%'
+                          _hover={{ borderRadius: 'lg' }}
+                        />
+                      </Box>
 
-                      <Text width='80%' height='40px' border='1px solid black'>
+                      <Text
+                        width='90%'
+                        minH='min-content'
+                        // border='1px solid black'
+                      >
                         {singleNews.title.length > 70
                           ? `${singleNews.title.slice(0, 70)}...`
                           : `${singleNews.title}`}
@@ -437,8 +478,8 @@ function HomePage() {
             justifyContent='space-between'
             alignItems='center'
             // border='1px solid black'
-            marginBottom='1rem'
-            marginTop='1rem'
+            marginBottom='2.5rem'
+            marginTop='2.5rem'
             height='20%'
           >
             {news.slice(20, 24).map(singleNews => {
@@ -446,12 +487,12 @@ function HomePage() {
                 <Flex
                   flexDirection='column'
                   // border='1px solid black'
+                  key={singleNews.url}
                   style={{ height: '100%' }}
                 >
                   <ChakraLink
                     as={ReactRouterLink}
                     to={singleNews.url}
-                    key={singleNews.url}
                     target='_blank'
                     _hover={{ textDecoration: 'none' }}
                     style={{ height: '100%' }}
@@ -466,15 +507,28 @@ function HomePage() {
                       style={{ height: '100%' }}
                       _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
                     >
-                      <Image
-                        alt='sample_file'
-                        src={singleNews.image}
-                        marginBottom='0.3rem'
-                        width='80%'
-                        _hover={{ borderRadius: 'lg' }}
-                      />
+                      <Box
+                        // border='1px solid black'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                        width='90%'
+                      >
+                        <Image
+                          alt='sample_file'
+                          src={singleNews.image}
+                          marginBottom='0.3rem'
+                          width='100%'
+                          height='90%'
+                          _hover={{ borderRadius: 'lg' }}
+                        />
+                      </Box>
 
-                      <Text width='80%' height='50px' border='1px solid black'>
+                      <Text
+                        width='90%'
+                        // border='1px solid black'
+                        minH='min-content'
+                      >
                         {singleNews.title.length > 90
                           ? `${singleNews.title.slice(0, 90)}...`
                           : `${singleNews.title}`}
@@ -496,8 +550,8 @@ function HomePage() {
             justifyContent='space-between'
             alignItems='center'
             // border='1px solid black'
-            marginBottom='1rem'
-            marginTop='1rem'
+            marginBottom='5rem'
+            marginTop='2.5rem'
             height='20%'
           >
             {news.slice(24, 28).map(singleNews => {
@@ -525,15 +579,28 @@ function HomePage() {
                       textAlign='left'
                       _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
                     >
-                      <Image
-                        alt='sample_file'
-                        src={singleNews.image}
-                        marginBottom='0.3rem'
-                        width='80%'
-                        _hover={{ borderRadius: 'lg' }}
-                      />
+                      <Box
+                        // border='1px solid black'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                        width='90%'
+                      >
+                        <Image
+                          alt='sample_file'
+                          src={singleNews.image}
+                          marginBottom='0.3rem'
+                          width='100%'
+                          height='90%'
+                          _hover={{ borderRadius: 'lg' }}
+                        />
+                      </Box>
 
-                      <Text width='80%' height='50px' border='1px solid black'>
+                      <Text
+                        width='90%'
+                        // border='1px solid black'
+                        height='min-content'
+                      >
                         {singleNews.title.length > 90
                           ? `${singleNews.title.slice(0, 90)}...`
                           : `${singleNews.title}`}
