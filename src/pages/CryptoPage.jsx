@@ -280,7 +280,7 @@ function CryptoPage() {
         <Flex marginLeft='3rem' justifyContent='flex-start'>
           <Image
             src={cryptoInfo.image}
-            fallbackSrc=''
+            fallbackSrc='/crypto-logo.webp'
             alt=''
             width='160px'
             height='auto'

@@ -342,7 +342,14 @@ function HomePage() {
                         position='relative'
                         // border='1px solid red'
                       >
-                        <Image alt='sample_file' src={singleNews.image} />
+                        <Image
+                          alt='sample_file'
+                          src={singleNews.image}
+                          fallbackSrc='/news_substitute.jpg'
+                          style={{
+                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.5)',
+                          }}
+                        />
                         <Text
                           position='absolute'
                           bottom='0'
@@ -352,6 +359,9 @@ function HomePage() {
                           color='gray.100'
                           width='100%'
                           _hover={{ color: 'rgba(220, 14, 117, 0.9)' }}
+                          style={{
+                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.5)',
+                          }}
                         >
                           {singleNews.title}
                         </Text>
@@ -449,6 +459,9 @@ function HomePage() {
                           width='100%'
                           height='90%'
                           _hover={{ borderRadius: 'lg' }}
+                          style={{
+                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.5)',
+                          }}
                         />
                       </Box>
 
@@ -521,6 +534,9 @@ function HomePage() {
                           width='100%'
                           height='90%'
                           _hover={{ borderRadius: 'lg' }}
+                          style={{
+                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.5)',
+                          }}
                         />
                       </Box>
 
@@ -559,7 +575,9 @@ function HomePage() {
                 <Flex
                   flexDirection='column'
                   // border='1px solid black'
-                  style={{ height: '100%' }}
+                  style={{
+                    height: '100%',
+                  }}
                 >
                   <ChakraLink
                     as={ReactRouterLink}
@@ -593,6 +611,9 @@ function HomePage() {
                           width='100%'
                           height='90%'
                           _hover={{ borderRadius: 'lg' }}
+                          style={{
+                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.5)',
+                          }}
                         />
                       </Box>
 

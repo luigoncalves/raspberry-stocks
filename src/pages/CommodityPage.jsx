@@ -280,7 +280,7 @@ function CommodityPage() {
         <Flex marginLeft='3rem' justifyContent='flex-start'>
           <Image
             src={commodInfo.image}
-            fallbackSrc=''
+            fallbackSrc='/commod-logo.webp'
             alt=''
             width='160px'
             height='auto'

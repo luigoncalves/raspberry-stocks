@@ -280,7 +280,7 @@ function ForexPage() {
         <Flex marginLeft='3rem' justifyContent='flex-start'>
           <Image
             src={forexInfo.image}
-            fallbackSrc=''
+            fallbackSrc='/forex-logo.webp'
             alt=''
             width='160px'
             height='auto'

@@ -289,7 +289,7 @@ function StockPage() {
         <Flex marginLeft='3rem' justifyContent='flex-start'>
           <Image
             src={stockInfo.image}
-            fallbackSrc=''
+            fallbackSrc='/stock-logo.jpeg'
             alt=''
             width='160px'
             height='auto'
