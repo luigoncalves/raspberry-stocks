@@ -377,7 +377,7 @@ function HomePage() {
             display='flex'
             justifyContent='space-between'
             alignItems='center'
-            // border='1px solid black'
+            border='1px solid black'
             marginBottom='1rem'
             marginTop='1rem'
             height='20%'
@@ -386,7 +386,7 @@ function HomePage() {
               return (
                 <Flex
                   flexDirection='column'
-                  // border='1px solid black'
+                  border='1px solid black'
                   key={singleNews.url}
                   style={{ height: '100%' }}
                 >
@@ -415,7 +415,7 @@ function HomePage() {
                         _hover={{ borderRadius: 'lg' }}
                       />
 
-                      <Text width='80%'>
+                      <Text width='80%' height='40px' border='1px solid black'>
                         {singleNews.title.length > 70
                           ? `${singleNews.title.slice(0, 70)}...`
                           : `${singleNews.title}`}
@@ -474,7 +474,7 @@ function HomePage() {
                         _hover={{ borderRadius: 'lg' }}
                       />
 
-                      <Text width='80%'>
+                      <Text width='80%' height='50px' border='1px solid black'>
                         {singleNews.title.length > 90
                           ? `${singleNews.title.slice(0, 90)}...`
                           : `${singleNews.title}`}
@@ -533,7 +533,7 @@ function HomePage() {
                         _hover={{ borderRadius: 'lg' }}
                       />
 
-                      <Text width='80%'>
+                      <Text width='80%' height='50px' border='1px solid black'>
                         {singleNews.title.length > 90
                           ? `${singleNews.title.slice(0, 90)}...`
                           : `${singleNews.title}`}
