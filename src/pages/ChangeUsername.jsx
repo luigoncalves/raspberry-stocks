@@ -30,12 +30,12 @@ function ChangeUsername() {
 
     const changedUser = { newName, password, userId: user._id };
 
-    console.log(changedUser);
+    // console.log(changedUser);
 
     try {
       const response = await changeUsername(changedUser);
       authenticateUser();
-      console.log('Response:', response);
+      // console.log('Response:', response);
       navigate(`/profile/${user.name}`);
     } catch (error) {
       console.log('Error chnaging the username', error);

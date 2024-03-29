@@ -44,7 +44,7 @@ function Search() {
       const searchResponse = await axios.get(
         `https://financialmodelingprep.com/api/v3/search?query=${inputField}&apikey=${apiKey}`
       );
-      console.log('Look here:', searchResponse.data);
+      // console.log('Look here:', searchResponse.data);
       setSearchItems(searchResponse.data);
       setResultsLength(searchResponse.data.length);
       setDisplayedItems(0);
@@ -130,7 +130,7 @@ function Search() {
 
           const stockInfo = response.data[0];
 
-          console.log('this is stock Info', stockInfo);
+          // console.log('this is stock Info', stockInfo);
 
           item.price = stockInfo.price;
           item.changesPercentage = stockInfo.changesPercentage;
@@ -145,8 +145,8 @@ function Search() {
 
       setItemsToShow([...itemsToShow, ...updatedItems]);
       setDisplayedItems(displayedItems + 10);
-      console.log('this is displayed items', displayedItems);
-      console.log('this is updated items:', updatedItems);
+      // console.log('this is displayed items', displayedItems);
+      // console.log('this is updated items:', updatedItems);
     } catch (error) {
       console.log(error);
     }

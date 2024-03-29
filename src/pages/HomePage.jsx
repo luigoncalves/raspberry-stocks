@@ -89,7 +89,7 @@ function HomePage() {
         response11.data,
         response12.data,
       ]);
-      console.log('Stocks:', stocks);
+      // console.log('Stocks:', stocks);
     } catch (error) {
       console.log(error);
     }
@@ -102,7 +102,7 @@ function HomePage() {
       const responseNews = await axios.get(
         `https://financialmodelingprep.com/api/v3/stock_news?page=0&apikey=${apiKey}`
       );
-      console.log(responseNews.data);
+      // console.log(responseNews.data);
       setNews(responseNews.data);
     } catch (error) {
       console.log(error);
@@ -123,7 +123,7 @@ function HomePage() {
         `https://financialmodelingprep.com/api/v3/quote/GCUSD?apikey=${apiKey}`
       );
 
-      console.log(responseC1.data);
+      // console.log(responseC1.data);
       setCommodities([responseC1.data, responseC2.data, responseC3.data]);
     } catch (error) {
       console.log(error);
@@ -144,7 +144,7 @@ function HomePage() {
         `https://financialmodelingprep.com/api/v3/quote/USDJPY?apikey=${apiKey}`
       );
 
-      console.log(responseF1.data);
+      // console.log(responseF1.data);
       setForex([responseF1.data, responseF2.data, responseF3.data]);
     } catch (error) {
       console.log(error);
@@ -165,7 +165,7 @@ function HomePage() {
         `https://financialmodelingprep.com/api/v3/quote/BNBUSD?apikey=${apiKey}`
       );
 
-      console.log(responseCr1.data);
+      // console.log(responseCr1.data);
       setCrypto([responseCr1.data, responseCr2.data, responseCr3.data]);
     } catch (error) {
       console.log(error);
@@ -174,15 +174,15 @@ function HomePage() {
 
   // -----------------------  get user Watchlist  ------------------------------
 
-  const getWatchlist = async () => {
-    try {
-      const response = await getAllUserItems(user);
-      console.log('this is the watchList:', response.data);
-      setUserWatchlist(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getWatchlist = async () => {
+  //   try {
+  //     const response = await getAllUserItems(user);
+  //     // console.log('this is the watchList:', response.data);
+  //     setUserWatchlist(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     getMainNews();
@@ -190,10 +190,10 @@ function HomePage() {
     getMainCommodities();
     getMainForex();
     getMainCrypto();
-    if (user && isLoggedIn) {
-      getWatchlist();
-    }
-    console.log('Stocks:', stocks);
+    // if (user && isLoggedIn) {
+    //   getWatchlist();
+    // }
+    // console.log('Stocks:', stocks);
   }, []);
 
   return (

@@ -72,7 +72,7 @@ function ForexPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/search?query=${forexTicker}&exchange=FOREX&apikey=${apiKey}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       setForexInfo(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -84,7 +84,7 @@ function ForexPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/quote/${forexTicker}?apikey=${apiKey}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       setForexQuote(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -123,13 +123,13 @@ function ForexPage() {
   const checkWatchList = async () => {
     try {
       const response = await getAllUserItems(user);
-      console.log('this is the watchList:', response.data);
+      // console.log('this is the watchList:', response.data);
       const check = await response.data.some(
         item => item.tickerSymbol === forexTicker
       );
       setAddButton(!check);
-      console.log('check', check);
-      console.log('inside checkwatchlist', addButton);
+      // console.log('check', check);
+      // console.log('inside checkwatchlist', addButton);
     } catch (error) {
       console.log(error);
     }
@@ -156,13 +156,13 @@ function ForexPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/historical-price-full/${forexTicker}?apikey=${apiKey}`
       );
-      console.log('reponse here:', response.data.historical);
+      // console.log('reponse here:', response.data.historical);
       const revertArray = response.data.historical.reverse();
 
       setHistoricalPrices(revertArray);
 
-      console.log('this is revertedarray', revertArray);
-      console.log('this is historicalPrices1', historicalPrices);
+      // console.log('this is revertedarray', revertArray);
+      // console.log('this is historicalPrices1', historicalPrices);
     } catch (error) {
       console.log(error);
     }
@@ -213,7 +213,7 @@ function ForexPage() {
   useEffect(() => {
     if (user) {
       checkWatchList();
-      console.log(addButton);
+      // console.log(addButton);
     }
   }, [addButton]);
 
@@ -241,12 +241,12 @@ function ForexPage() {
   useEffect(() => {
     getHistoricalData(forexTicker);
 
-    console.log('this is historicalPrices2', historicalPrices);
-    console.log('this is the time stamp:', graphDate);
+    // console.log('this is historicalPrices2', historicalPrices);
+    // console.log('this is the time stamp:', graphDate);
   }, [graphDate, gridItemHeight, gridItemWidth]);
 
   useEffect(() => {
-    console.log('this is historicalPrices', historicalPrices);
+    // console.log('this is historicalPrices', historicalPrices);
     if (historicalPrices.length > 0 && graphDate) {
       chooseGraphDates();
       forexPriceChanges();

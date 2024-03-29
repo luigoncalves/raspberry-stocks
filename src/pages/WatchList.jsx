@@ -43,7 +43,7 @@ function WatchList() {
   const getWatchlist = async () => {
     try {
       const response = await getAllUserItems(user);
-      console.log('this is the watchList:', response.data);
+      // console.log('this is the watchList:', response.data);
       setUserStocks(response.data);
     } catch (error) {
       console.log(error);
@@ -53,7 +53,7 @@ function WatchList() {
   // ----------- this takes the array from getWatchList and makes a request for each item for its info
 
   const getStocksInfo = async () => {
-    console.log('This is userStocks:', userStocks);
+    // console.log('This is userStocks:', userStocks);
 
     try {
       const promises = userStocks.map(async userStock => {
@@ -62,7 +62,7 @@ function WatchList() {
           const response = await axios.get(
             `https://financialmodelingprep.com/api/v3/profile/${userStock.tickerSymbol}?apikey=${apiKey}`
           );
-          console.log('Individual stock response:', response.data[0]);
+          // console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
           response.data[0].typeOfAssetURL = 'stocks';
           return response.data[0];
@@ -73,7 +73,7 @@ function WatchList() {
           const response = await axios.get(
             `https://financialmodelingprep.com/api/v3/quote/${userStock.tickerSymbol}?apikey=${apiKey}`
           );
-          console.log('Individual stock response:', response.data[0]);
+          // console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
           response.data[0].typeOfAssetURL = 'commodities';
           return response.data[0];
@@ -84,7 +84,7 @@ function WatchList() {
           const response = await axios.get(
             `https://financialmodelingprep.com/api/v3/quote/${userStock.tickerSymbol}?apikey=${apiKey}`
           );
-          console.log('Individual stock response:', response.data[0]);
+          // console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
           response.data[0].typeOfAssetURL = 'forex';
           return response.data[0];
@@ -95,7 +95,7 @@ function WatchList() {
           const response = await axios.get(
             `https://financialmodelingprep.com/api/v3/quote/${userStock.tickerSymbol}?apikey=${apiKey}`
           );
-          console.log('Individual stock response:', response.data[0]);
+          // console.log('Individual stock response:', response.data[0]);
           response.data[0]._id = userStock._id;
           response.data[0].typeOfAssetURL = 'crypto';
           return response.data[0];
@@ -105,8 +105,8 @@ function WatchList() {
       const promisesArray = await Promise.all(promises);
       setWatchlist(promisesArray);
 
-      console.log('This is promisesArray:', promisesArray);
-      console.log('This is watchlist:', watchlist);
+      // console.log('This is promisesArray:', promisesArray);
+      // console.log('This is watchlist:', watchlist);
     } catch (error) {}
   };
 
@@ -115,12 +115,12 @@ function WatchList() {
   useEffect(() => {
     const functionToRun = async () => {
       if (isLoggedIn && user) {
-        console.log(user);
+        // console.log(user);
         await getWatchlist();
       }
     };
-    console.log(user);
-    console.log(isLoggedIn);
+    // console.log(user);
+    // console.log(isLoggedIn);
     functionToRun();
   }, [user, updateDelete]);
 

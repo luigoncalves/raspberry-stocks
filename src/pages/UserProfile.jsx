@@ -66,7 +66,7 @@ function UserProfile() {
   };
 
   const toggleDelete = async () => {
-    console.log(user);
+    // console.log(user);
     await deleteUser(user);
     onClose;
     authenticateUser();

@@ -157,13 +157,13 @@ function StockPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/historical-price-full/${stockTicker}?apikey=${apiKey}`
       );
-      console.log('reponse here:', response.data.historical);
+      // console.log('reponse here:', response.data.historical);
       const revertArray = response.data.historical.reverse();
 
       setHistoricalPrices(revertArray);
 
-      console.log('this is revertedarray', revertArray);
-      console.log('this is historicalPrices1', historicalPrices);
+      // console.log('this is revertedarray', revertArray);
+      // console.log('this is historicalPrices1', historicalPrices);
 
       // if (graphDate) {
       //   chooseGraphDates();
@@ -247,15 +247,15 @@ function StockPage() {
   useEffect(() => {
     getHistoricalData(stockTicker);
 
-    console.log('this is historicalPrices2', historicalPrices);
-    console.log('this is the time stamp:', graphDate);
+    // console.log('this is historicalPrices2', historicalPrices);
+    // console.log('this is the time stamp:', graphDate);
     // if (historicalPrices && auxPrices) {
     //   stockPriceChanges();
     // }
   }, [graphDate, gridItemHeight, gridItemWidth]);
 
   useEffect(() => {
-    console.log('this is historicalPrices', historicalPrices);
+    // console.log('this is historicalPrices', historicalPrices);
     if (historicalPrices.length > 0 && graphDate) {
       chooseGraphDates();
       stockPriceChanges();

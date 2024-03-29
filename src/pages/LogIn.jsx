@@ -34,11 +34,11 @@ function LogIn() {
     try {
       //login response with the jwt token
       const response = await login(user);
-      console.log(response.data.authToken);
+      // console.log(response.data.authToken);
 
       storeToken(response.data.authToken);
       authenticateUser();
-      console.log(user);
+      // console.log(user);
       navigate('/');
     } catch (error) {
       console.log('Error loging in', error);

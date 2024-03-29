@@ -36,12 +36,12 @@ function ChangePassword() {
       userId: user._id,
     };
 
-    console.log(newPassword);
+    // console.log(newPassword);
 
     try {
       const response = await changeUserPassword(newPasswordObject);
       // authenticateUser();
-      console.log('Response:', response);
+      // console.log('Response:', response);
       navigate(`/profile/${user.name}`);
     } catch (error) {
       console.log('Error chnaging the password', error);

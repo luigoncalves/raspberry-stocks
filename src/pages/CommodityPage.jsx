@@ -72,7 +72,7 @@ function CommodityPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/search?query=${commodTicker}&exchange=COMMODITY&apikey=${apiKey}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       setCommodInfo(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -84,7 +84,7 @@ function CommodityPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/quote/${commodTicker}?apikey=${apiKey}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       setCommodQuote(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -123,13 +123,13 @@ function CommodityPage() {
   const checkWatchList = async () => {
     try {
       const response = await getAllUserItems(user);
-      console.log('this is the watchList:', response.data);
+      // console.log('this is the watchList:', response.data);
       const check = await response.data.some(
         item => item.tickerSymbol === commodTicker
       );
       setAddButton(!check);
-      console.log('check', check);
-      console.log('inside checkwatchlist', addButton);
+      // console.log('check', check);
+      // console.log('inside checkwatchlist', addButton);
     } catch (error) {
       console.log(error);
     }
@@ -156,13 +156,13 @@ function CommodityPage() {
       const response = await axios.get(
         `https://financialmodelingprep.com/api/v3/historical-price-full/${commodTicker}?apikey=${apiKey}`
       );
-      console.log('reponse here:', response.data.historical);
+      // console.log('reponse here:', response.data.historical);
       const revertArray = response.data.historical.reverse();
 
       setHistoricalPrices(revertArray);
 
-      console.log('this is revertedarray', revertArray);
-      console.log('this is historicalPrices1', historicalPrices);
+      // console.log('this is revertedarray', revertArray);
+      // console.log('this is historicalPrices1', historicalPrices);
     } catch (error) {
       console.log(error);
     }
@@ -213,7 +213,7 @@ function CommodityPage() {
   useEffect(() => {
     if (user) {
       checkWatchList();
-      console.log(addButton);
+      // console.log(addButton);
     }
   }, [addButton]);
 
@@ -241,12 +241,12 @@ function CommodityPage() {
   useEffect(() => {
     getHistoricalData(commodTicker);
 
-    console.log('this is historicalPrices2', historicalPrices);
-    console.log('this is the time stamp:', graphDate);
+    // console.log('this is historicalPrices2', historicalPrices);
+    // console.log('this is the time stamp:', graphDate);
   }, [graphDate, gridItemHeight, gridItemWidth]);
 
   useEffect(() => {
-    console.log('this is historicalPrices', historicalPrices);
+    // console.log('this is historicalPrices', historicalPrices);
     if (historicalPrices.length > 0 && graphDate) {
       chooseGraphDates();
       commodPriceChanges();

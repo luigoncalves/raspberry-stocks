@@ -7,6 +7,7 @@ export const CustomTooltip = ({ active, payload, label }) => {
         flexDirection='column'
         bg='gray.100'
         border='1px solid rgba(220, 14, 117, 0.9)'
+        padding='0.3rem'
       >
         <p className='label'>{`${label}`}</p>
         <div>
