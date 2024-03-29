@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import Graphs from '../components/Graphs';
+import { CustomTooltip } from '../components/CustomTooltip';
 import axios from 'axios';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
@@ -11,6 +11,14 @@ import {
   CardFooter,
   Stack,
 } from '@chakra-ui/react';
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from 'recharts';
 import {
   Flex,
   Box,
@@ -52,6 +60,10 @@ function CryptoPage() {
   const gridItemRef = useRef(null);
   const [gridItemWidth, setGridItemWidth] = useState(0);
   const [gridItemHeight, setGridItemHeight] = useState(0);
+
+  const [historicalPrices, setHistoricalPrices] = useState([]);
+  const [auxPrices, setAuxPrices] = useState([]);
+  const [changes, setChanges] = useState([]);
 
   const { isLoggedIn, user } = useContext(AuthContext);
 
@@ -137,11 +149,63 @@ function CryptoPage() {
     }
   };
 
+  // ---------------------------------------  this function will get the daily value of the stock for the last 5 years
+
+  const getHistoricalData = async cryptoTicker => {
+    try {
+      const response = await axios.get(
+        `https://financialmodelingprep.com/api/v3/historical-price-full/${cryptoTicker}?apikey=${apiKey}`
+      );
+      console.log('reponse here:', response.data.historical);
+      const revertArray = response.data.historical.reverse();
+
+      setHistoricalPrices(revertArray);
+
+      console.log('this is revertedarray', revertArray);
+      console.log('this is historicalPrices1', historicalPrices);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // -------------------------------------  choosing the time interval
+
+  const chooseGraphDates = () => {
+    if (graphDate === '5D') {
+      setAuxPrices(historicalPrices.slice(-5));
+    } else if (graphDate === '1M') {
+      setAuxPrices(historicalPrices.slice(-20));
+    } else if (graphDate === '3M') {
+      setAuxPrices(historicalPrices.slice(-60));
+    } else if (graphDate === '6M') {
+      setAuxPrices(historicalPrices.slice(-120));
+    } else if (graphDate === '1Y') {
+      setAuxPrices(historicalPrices.slice(-240));
+    } else if (graphDate === '5Y') {
+      setAuxPrices(historicalPrices);
+    }
+    // if the variable comes as undefined, it's assumed as 1Y
+    else {
+      setAuxPrices(historicalPrices.slice(-240));
+    }
+  };
+
+  const cryptoPriceChanges = async () => {
+    try {
+      const response = await axios.get(
+        `https://financialmodelingprep.com/api/v3/stock-price-change/${cryptoTicker}?apikey=${apiKey}`
+      );
+      setChanges(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getCryptoInfo();
     getCryptoQuote();
     getCryptoNews();
-    console.log('this is news', news);
+    getHistoricalData(cryptoTicker);
   }, []);
 
   // ------------------------------- everytime the button is clicked this runs
@@ -173,6 +237,21 @@ function CryptoPage() {
     };
     updateDimensions();
   }, [window.innerHeight, window.innerWidth]);
+
+  useEffect(() => {
+    getHistoricalData(cryptoTicker);
+
+    console.log('this is historicalPrices2', historicalPrices);
+    console.log('this is the time stamp:', graphDate);
+  }, [graphDate, gridItemHeight, gridItemWidth]);
+
+  useEffect(() => {
+    console.log('this is historicalPrices', historicalPrices);
+    if (historicalPrices.length > 0 && graphDate) {
+      chooseGraphDates();
+      cryptoPriceChanges();
+    }
+  }, [historicalPrices]);
 
   return (
     <Grid
@@ -627,13 +706,41 @@ function CryptoPage() {
           </Flex>
         </Box>
         <Flex justifyContent='center' alignItems='center'>
-          {graphDate && (
+          {/* {graphDate && (
             <Graphs
               symbol={cryptoTicker}
               date={graphDate}
               graphW={gridItemWidth}
               graphH={gridItemHeight}
             />
+          )} */}
+
+          {historicalPrices.length > 0 && changes.length > 0 ? (
+            <LineChart
+              width={gridItemWidth * 0.9}
+              height={gridItemHeight * 0.85}
+              data={auxPrices}
+            >
+              <Line
+                type='monotone'
+                dataKey='close'
+                stroke={changes[0][graphDate] > 0 ? '#38A169' : '#E53E3E'}
+                dot={false}
+              />
+              <CartesianGrid stroke='#ccc' />
+              <XAxis dataKey='label' fontSize='10' />
+              <YAxis fontSize='10' />
+              <Tooltip content={<CustomTooltip />} />
+            </LineChart>
+          ) : (
+            <Flex
+              width={gridItemWidth * 0.9}
+              height={gridItemHeight * 0.85}
+              justifyContent='center'
+              alignItems='center'
+            >
+              No Available Data
+            </Flex>
           )}
         </Flex>
       </GridItem>

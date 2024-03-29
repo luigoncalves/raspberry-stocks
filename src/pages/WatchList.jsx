@@ -12,6 +12,7 @@ import {
   Spacer,
   GridItem,
   Grid,
+  Button,
 } from '@chakra-ui/react';
 
 import {
@@ -145,9 +146,10 @@ function WatchList() {
     <Flex
       flexDirection='column'
       justifyContent='start'
-      alignItems='flex-start'
+      alignContent='center'
       width='100vw'
-      height='100vh'
+      height='auto'
+      minH='100vh'
       bg='gray.100'
     >
       <Heading margin='2.5rem' textAlign='left' color='rgba(15, 22, 97, 1)'>
@@ -204,11 +206,18 @@ function WatchList() {
                     </Td>
 
                     <Td>
-                      <button
+                      <Button
+                        color='gray.100'
+                        border='1px solid rgba(220, 14, 117, 0.9)'
+                        bg='rgba(220, 14, 117, 0.9)'
+                        _hover={{
+                          bg: 'white',
+                          color: 'rgba(220, 14, 117, 0.9)',
+                        }}
                         onClick={() => deleteItemFromWatchList(stock._id)}
                       >
                         Remove
-                      </button>
+                      </Button>
                     </Td>
                   </Tr>
                 );

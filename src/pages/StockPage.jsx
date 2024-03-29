@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import Graphs from '../components/Graphs';
+import { CustomTooltip } from '../components/CustomTooltip';
 import axios from 'axios';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
@@ -730,7 +730,7 @@ function StockPage() {
               <CartesianGrid stroke='#ccc' />
               <XAxis dataKey='label' fontSize='10' />
               <YAxis fontSize='10' />
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
             </LineChart>
           ) : (
             <Flex
